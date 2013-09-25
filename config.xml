@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns = "http://www.w3.org/ns/widgets"
+    xmlns:gap = "http://phonegap.com/ns/1.0"
+    id = "com.openplans.od-capture"
+    version = "0.1"
+    versionCode = "1"
+    >
+
+    <preference name="phonegap-version" value="2.9.0" />
+    <preference name="orientation" value="portrait" />
+
+    <name>OD Survey</name>
+
+    <description>
+        Origin-Destination Transit Surveys
+    </description>
+
+    <author href="http://openplans.org" email="hello@openplans.org">
+        OpenPlans
+    </author>
+
+    <gap:platforms>
+        <gap:platform name="android" minVersion="4.3" />
+    </gap:platforms>
+
+    <feature name="http://api.phonegap.com/1.0/file"/>
+    <feature name="http://api.phonegap.com/1.0/geolocation"/>
+    <feature name="http://api.phonegap.com/1.0/network"/>
+
+    <!-- Access MapBox servers - TODO: change to specific domain -->
+    <!-- TODO: Add API domain -->
+    <access origin="*" subdomains="true" />
+</widget>
