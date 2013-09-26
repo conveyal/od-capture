@@ -52,7 +52,11 @@ var OdCapture = OdCapture || {};
       var form = evt.target,
           data = NS.Util.serializeObject(form).attrs;
 
-      this.collection.create(data);
+      if (this.model) {
+        this.model.save(data);
+      } else {
+        this.collection.create(data);
+      }
       NS.app.router.navigate('surveys', {trigger: true});
     }
   });

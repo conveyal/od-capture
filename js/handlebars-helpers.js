@@ -12,6 +12,12 @@ var OdCapture = OdCapture || {};
     return moment(this.created_datetime).fromNow();
   });
 
+  Handlebars.registerHelper('select', function( value, options ){
+    var $el = $('<select />').html( options.fn(this) );
+    $el.find('[value=' + value + ']').attr({'selected':'selected'});
+    return $el.html();
+  });
+
   Handlebars.registerHelper('fromnow', function(datetime) {
     if (datetime) {
       return moment(datetime).fromNow();

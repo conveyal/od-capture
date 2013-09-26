@@ -71,19 +71,23 @@
 
       <form>
         <fieldset>
-          <p><input type="text" name="surveyor" class="input-block" placeholder="Name of Surveyor..."></p>
-          <p><input type="text" name="route" class="input-block" placeholder="Name of Route being surveyed..."></p>
+          <p><input type="text" name="surveyor" value="{{ surveyor }}" class="input-block" placeholder="Name of Surveyor..."></p>
+          <p><input type="text" name="route" value="{{ route }}" class="input-block" placeholder="Name of Route being surveyed..."></p>
           <p><select name="vehicletype" class="select-block">
+            {{#select vehicletype}}
             <option value="null">Type of vehicle travelled on during survey</option>
             <option value="vehicle-type-1">Vehicle Type One</option>
             <option value="vehicle-type-2">Vehicle Type Two</option>
             <option value="vehicle-type-3">Vehicle Type Three</option>
             <option value="vehicle-type-4">Vehicle Type Four</option>
+            {{/select}}
           </select></p>
-          <p><input type="text" name="capacity" class="input-block" placeholder="Capacity of vehicle travelled on during survey"></p>
-          <p><label>Notes:</label><textarea name="notes"></textarea></p>
+          <p><input type="text" name="capacity" value="{{ capacity }}" class="input-block" placeholder="Capacity of vehicle travelled on during survey"></p>
+          <p><label>Notes:</label><textarea name="notes">{{ notes }}</textarea></p>
         </fieldset>
-        <button type="submit" class="btn btn-block btn-large btn-primary">Create Survey</button>
+        <button type="submit" class="btn btn-block btn-large btn-primary">
+        {{#if id}} Save Survey {{else}} Create Survey {{/if}}
+        </button>
       </form>
 
     </div><!-- / .container -->

@@ -6,20 +6,22 @@ var OdCapture = OdCapture || {};
   NS.Router = Backbone.Marionette.AppRouter.extend({
     appRoutes: {
       'surveys/new': 'surveyForm',
+      'surveys/:id': 'surveyForm',
       'surveys': 'surveyList',
       '*anything': 'anything'
     }
   });
 
   NS.controller = {
-    'surveyForm': function() {
+    'surveyForm': function(id) {
+      var model = NS.app.surveyCollection.get(id) || null;
+
       NS.app.mainRegion.show(new NS.SurveyFormView({
-        collection: NS.app.surveyCollection
+        collection: NS.app.surveyCollection,
+        model: model
       }));
     },
     'surveyList': function() {
-      console.log(NS.app.surveyCollection.toJSON());
-
       NS.app.mainRegion.show(new NS.SurveyCollectionView({
         collection: NS.app.surveyCollection
       }));
