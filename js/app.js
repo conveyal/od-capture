@@ -5,15 +5,29 @@ var OdCapture = OdCapture || {};
 (function(NS, $) {
   NS.Router = Backbone.Marionette.AppRouter.extend({
     appRoutes: {
-      '*anything': 'home'
+      'surveys/new': 'surveyForm',
+      'surveys': 'surveyList',
+      '*anything': 'anything'
     }
   });
 
   NS.controller = {
-    'home': function() {
-      NS.app.mainRegion.show(new NS.SessionCollectionView({
-        collection: NS.app.sessionCollection
+    'surveyForm': function() {
+      NS.app.mainRegion.show(new NS.SurveyFormView({
+        collection: NS.app.surveyCollection
       }));
+    },
+    'surveyList': function() {
+      console.log(NS.app.surveyCollection.toJSON());
+
+      NS.app.mainRegion.show(new NS.SurveyCollectionView({
+        collection: NS.app.surveyCollection
+      }));
+    },
+    'anything': function() {
+      // Default to the survey list
+      this.surveyList();
+      NS.app.router.navigate('surveys', {replace: true});
     }
   };
 
@@ -25,14 +39,35 @@ var OdCapture = OdCapture || {};
   });
 
   NS.app.addInitializer(function(options){
-    this.sessionCollection = new NS.LocalSessionCollection();
+    this.surveyCollection = new NS.LocalSurveyCollection();
+
+    this.surveyCollection.fetch();
 
     // Construct a new app router
     this.router = new NS.Router({
       controller: NS.controller
     });
 
-    Backbone.history.start({ pushState: true });
+    Backbone.history.start();
+
+    // Globally capture clicks. If they are internal and not in the pass
+    // through list, route them through Backbone's navigate method.
+    $(document).on('click', 'a[href^="/"]', function(evt) {
+      var $link = $(evt.currentTarget),
+          href = $link.attr('href'),
+          url;
+
+      evt.preventDefault();
+
+      // Remove leading slashes and hash bangs (backward compatablility)
+      url = href.replace(/^\//, '');
+
+      // # Instruct Backbone to trigger routing events
+      NS.app.router.navigate(url, { trigger: true });
+
+      return false;
+    });
+
 
   });
 

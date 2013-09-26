@@ -41,14 +41,39 @@ var OdCapture = OdCapture || {};
     }
   };
 
-  NS.SessionItemView = Backbone.Marionette.ItemView.extend({
-    template: '#session-item-tpl'
+  NS.SurveyFormView = Backbone.Marionette.ItemView.extend({
+    template: '#survey-form-tpl',
+    events: {
+      'submit form': 'saveSurvey'
+    },
+    saveSurvey: function(evt) {
+      evt.preventDefault();
+
+      var form = evt.target,
+          data = NS.Util.serializeObject(form).attrs;
+
+      this.collection.create(data);
+      NS.app.router.navigate('surveys', {trigger: true});
+    }
   });
 
-  NS.SessionCollectionView = Backbone.Marionette.CompositeView.extend({
-    template: '#session-collection-tpl',
-    itemView: NS.SessionItemView,
-    itemViewContainer: '.session-list',
+  NS.EmptySurveyCollectionView  = Backbone.Marionette.ItemView.extend({
+    template: '#emtpy-survey-collection-tpl',
+    tagName: 'li',
+    className: 'clearfix'
+  });
+
+  NS.SurveyItemView = Backbone.Marionette.ItemView.extend({
+    template: '#survey-item-tpl',
+    tagName: 'li',
+    className: 'clearfix'
+  });
+
+  NS.SurveyCollectionView = Backbone.Marionette.CompositeView.extend({
+    template: '#survey-collection-tpl',
+    itemView: NS.SurveyItemView,
+    itemViewContainer: '.survey-list',
+    emptyView: NS.EmptySurveyCollectionView,
     appendHtml: NS.OrderedCollectionMixin.appendHtml
   });
 

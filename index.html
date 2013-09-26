@@ -17,24 +17,78 @@
 </head>
 <body>
 
-  <script id="session-collection-tpl" type="text/x-handlebars-template">
+  <script id="survey-item-tpl" type="text/x-handlebars-template">
+    <div class="survey-meta column-left-60">
+      <span class="survey-count">{{ responses.length }}</span>
+      <small class="timestamp">Last response: <strong>{{ last_updated }}</strong></small>
+      <span class="route-name">{{ route }}</span>
+      <span class="surveyor-name">{{ surveyor }}</span>,
+      <span class="vehicle-type">{{ vehicletype }}</span>
+      <a href="/surveys/{{ id }}" class="survey-edit-link">EDIT</a>
+    </div>
+    <div class="column-right-35">
+      <a href="/survey/{{ id }}/new" class="btn btn-block btn-small">+ Response</a>
+    </div>
+  </script>
+
+
+  <script id="survey-collection-tpl" type="text/x-handlebars-template">
     <div class="container clearfix">
 
       <div class="column-left-60">
         <h2>Live Surveys</h2>
       </div>
       <div class="column-right-35">
-        <a href="#" class="btn btn-block btn-small btn-secondary">New Survey</a>
+        <a href="/surveys/new" class="btn btn-block btn-small btn-secondary">New Survey</a>
       </div>
 
     </div><!-- / .container -->
 
     <div class="container clearfix">
 
-      <ul class="session-list uploading unstyled-list">
+      <ul class="survey-list unstyled-list">
       </ul>
     </div><!-- / .container -->
   </script>
+
+  <script id="emtpy-survey-collection-tpl" type="text/x-handlebars-template">
+      <p>No active surveys. <a href="/surveys/new">Start a new one!</a></p>
+  </script>
+
+
+  <script id="survey-form-tpl" type="text/x-handlebars-template">
+    <div class="container clearfix">
+
+      <div class="column-left-60">
+        <h2>Create New Survey</h2>
+      </div>
+      <div class="column-right-35">
+        <a href="/surveys" class="btn btn-block btn-cancel">Cancel</a>
+      </div>
+
+    </div><!-- / .container -->
+    <div class="container clearfix">
+
+      <form>
+        <fieldset>
+          <p><input type="text" name="surveyor" class="input-block" placeholder="Name of Surveyor..."></p>
+          <p><input type="text" name="route" class="input-block" placeholder="Name of Route being surveyed..."></p>
+          <p><select name="vehicletype" class="select-block">
+            <option value="null">Type of vehicle travelled on during survey</option>
+            <option value="vehicle-type-1">Vehicle Type One</option>
+            <option value="vehicle-type-2">Vehicle Type Two</option>
+            <option value="vehicle-type-3">Vehicle Type Three</option>
+            <option value="vehicle-type-4">Vehicle Type Four</option>
+          </select></p>
+          <p><input type="text" name="capacity" class="input-block" placeholder="Capacity of vehicle travelled on during survey"></p>
+          <p><label>Notes:</label><textarea name="notes"></textarea></p>
+        </fieldset>
+        <button type="submit" class="btn btn-block btn-large btn-primary">Create Survey</button>
+      </form>
+
+    </div><!-- / .container -->
+  </script>
+
 
   <div id="main-region"></div>
 
@@ -45,8 +99,11 @@
   <script src="lib/backbone.js"></script>
   <script src="lib/backbone.marionette.js"></script>
   <script src="lib/backbone.localStorage.js"></script>
+  <script src="lib/moment.min.js"></script>
   <script src="lib/handlebars.js"></script>
 
+  <script src="js/utils.js"></script>
+  <script src="js/handlebars-helpers.js"></script>
   <script src="js/models.js"></script>
   <script src="js/views.js"></script>
   <script src="js/app.js"></script>

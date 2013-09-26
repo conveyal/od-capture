@@ -4,8 +4,16 @@ var OdCapture = OdCapture || {};
 
 (function(NS) {
 
-  NS.LocalSessionCollection = Backbone.Collection.extend({
-    localStorage: new Backbone.LocalStorage('odcapture-sessions')
+  NS.SurveyModel = Backbone.Model.extend({
+    defaults: {
+      responses: [],
+      created_datetime: (new Date()).toISOString()
+    }
+  });
+
+  NS.LocalSurveyCollection = Backbone.Collection.extend({
+    localStorage: new Backbone.LocalStorage('odcapture-surveys'),
+    model: NS.SurveyModel
   });
 
 }(OdCapture));
