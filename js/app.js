@@ -7,14 +7,26 @@ var OdCapture = OdCapture || {};
     appRoutes: {
       'surveys/new': 'surveyForm',
       'surveys/:id': 'surveyForm',
+      'surveys/:id/new': 'responseForm',
       'surveys': 'surveyList',
       '*anything': 'anything'
     }
   });
 
   NS.controller = {
+    'responseForm': function(id) {
+      var model = NS.app.surveyCollection.get(id);
+
+      if (model) {
+        NS.app.mainRegion.show(new NS.ResponseFormView({
+          model: model
+        }));
+      } else {
+        this.anything();
+      }
+    },
     'surveyForm': function(id) {
-      var model = NS.app.surveyCollection.get(id) || null;
+      var model = NS.app.surveyCollection.get(id);
 
       NS.app.mainRegion.show(new NS.SurveyFormView({
         collection: NS.app.surveyCollection,

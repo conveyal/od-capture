@@ -23,11 +23,11 @@
       <small class="timestamp">Last response: <strong>{{ last_updated }}</strong></small>
       <span class="route-name">{{ route }}</span>
       <span class="surveyor-name">{{ surveyor }}</span>,
-      <span class="vehicle-type">{{ vehicletype }}</span>
+      <span class="vehicle-type">{{ vehicle_type }}</span>
       <a href="/surveys/{{ id }}" class="survey-edit-link">EDIT</a>
     </div>
     <div class="column-right-35">
-      <a href="/survey/{{ id }}/new" class="btn btn-block btn-small">+ Response</a>
+      <a href="/surveys/{{ id }}/new" class="btn btn-block btn-small">+ Response</a>
     </div>
   </script>
 
@@ -73,9 +73,9 @@
         <fieldset>
           <p><input type="text" name="surveyor" value="{{ surveyor }}" class="input-block" placeholder="Name of Surveyor..."></p>
           <p><input type="text" name="route" value="{{ route }}" class="input-block" placeholder="Name of Route being surveyed..."></p>
-          <p><select name="vehicletype" class="select-block">
-            {{#select vehicletype}}
-            <option value="null">Type of vehicle travelled on during survey</option>
+          <p><select name="vehicle_type" class="select-block">
+            {{#select vehicle_type}}
+            <option value="">Type of vehicle travelled on during survey</option>
             <option value="vehicle-type-1">Vehicle Type One</option>
             <option value="vehicle-type-2">Vehicle Type Two</option>
             <option value="vehicle-type-3">Vehicle Type Three</option>
@@ -88,6 +88,128 @@
         <button type="submit" class="btn btn-block btn-large btn-primary">
         {{#if id}} Save Survey {{else}} Create Survey {{/if}}
         </button>
+      </form>
+
+    </div><!-- / .container -->
+  </script>
+
+  <script id="response-form-tpl" type="text/x-handlebars-template">
+    <div class="container clearfix">
+
+      <div class="column-left-60">
+        <h2>{{ route }}</h2>
+        <div class="session-meta">
+          <span class="surveyor-name">{{ surveyor }}</span>,
+          <span class="vehicle-type">{{ vehicle_type }}</span>
+        </div>
+      </div>
+      <div class="column-right-35">
+        <a href="/surveys" class="btn btn-block btn-cancel">Cancel Response</a>
+      </div>
+
+    </div><!-- / .container -->
+    <div class="container clearfix">
+
+      <form>
+        <fieldset>
+
+          <p class="clearfix">
+            <span class="column-left-60">
+              <span class="prompt">Where did you start your journey?</span>
+            </span>
+            <span class="column-right-35">
+              <a href="map.html" class="btn btn-block btn-small">Select Location</a>
+            </span>
+          </p>
+          <p>
+            <select name="origin_reason" class="select-block">
+              <option value="">What is your reason for being there?</option>
+              <option>Home</option>
+              <option>Work/Business</option>
+              <option>Shopping</option>
+              <option>Education</option>
+              <option>Social</option>
+              <option>Health</option>
+              <option>Other</option>
+            </select>
+          </p>
+
+        </fieldset>
+        <fieldset>
+
+          <p class="clearfix">
+            <span class="column-left-60">
+              <span class="prompt">Where is your final destination?</span>
+            </span>
+            <span class="column-right-35">
+              <a href="map.html" class="btn btn-block btn-small">Select Location</a>
+            </span>
+          </p>
+          <p>
+            <select name="destination_reason" class="select-block">
+              <option value="">What is your reason for going there?</option>
+              <option>Home</option>
+              <option>Work/Business</option>
+              <option>Shopping</option>
+              <option>Education</option>
+              <option>Social</option>
+              <option>Health</option>
+              <option>Other</option>
+            </select>
+          </p>
+
+        </fieldset>
+        <fieldset>
+
+          <p>How many different vehicles will you use to complete this journey?</p>
+          <p><select name="vehicle_count" class="select-block">
+            <option value="1">1 Vehicle</option>
+            <option value="2">2 Vehicles</option>
+            <option value="3">3 Vehicles</option>
+            <option value="4">4 Vehicles</option>
+            <option value="5">5 Vehicles</option>
+            <option value="6">6 Vehicles</option>
+          </select></p>
+
+        </fieldset>
+        <fieldset>
+
+          <p>Which types of vehicle will you have used when you complete this journey?</p>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Jeepney">Jeepney</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Non-Aircon Bus">Non-Aircon Bus</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Aircon Bus">Aircon Bus</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="AUV">AUV</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Tricycle">Tricycle</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="MRT">MRT</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="LRT">LRT</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Taxi">Taxi</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Car">Car</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Other">Other</label>
+
+        </fieldset>
+        <fieldset>
+
+          <p>How many Pesos will this journey have cost you?</p>
+          <p><input type="number" min="0" name="cost" class="input-block" placeholder="Cost of journey..."></p>
+
+        </fieldset>
+        <fieldset>
+
+          <p>How often do you make this journey?</p>
+          <p>
+            <select name="frequency" class="select-block">
+              <option>7 days per week</option>
+              <option>5-6 days per week</option>
+              <option>2-4 days per week</option>
+              <option>1 day per week</option>
+              <option>Once every 2 weeks</option>
+              <option>Every 3 weeks or less</option>
+            </select>
+          </p>
+
+        </fieldset>
+
+        <button type="submit" class="btn btn-block btn-large btn-primary">Submit Response</button>
       </form>
 
     </div><!-- / .container -->

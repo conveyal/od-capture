@@ -15,7 +15,15 @@ var OdCapture = OdCapture || {};
         if ($field.attr('data-placement') === 'header') {
           headers[obj.name] = obj.value;
         } else {
-          attrs[obj.name] = obj.value;
+          if (attrs[obj.name]) {
+            if ($.isArray(attrs[obj.name])) {
+              attrs[obj.name].push(obj.value);
+            } else {
+              attrs[obj.name] = [attrs[obj.name], obj.value];
+            }
+          } else {
+            attrs[obj.name] = obj.value;
+          }
         }
       });
 

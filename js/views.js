@@ -41,6 +41,25 @@ var OdCapture = OdCapture || {};
     }
   };
 
+  NS.ResponseFormView = Backbone.Marionette.ItemView.extend({
+    template: '#response-form-tpl',
+    events: {
+      'submit form': 'saveResponse'
+    },
+    saveResponse: function(evt) {
+      evt.preventDefault();
+
+      var form = evt.target,
+          data = NS.Util.serializeObject(form).attrs;
+
+      data.created_datetime = (new Date()).toISOString();
+
+      this.model.get('responses').push(data);
+      this.model.save();
+      NS.app.router.navigate('surveys', {trigger: true});
+    }
+  });
+
   NS.SurveyFormView = Backbone.Marionette.ItemView.extend({
     template: '#survey-form-tpl',
     events: {
