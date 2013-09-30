@@ -11,9 +11,9 @@
   <!--  Mobile Viewport Fix -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
+  <link rel="stylesheet" href="lib/leaflet-0.6.4/leaflet.css" />
   <link rel="stylesheet" href="css/normalize.css" type="text/css" />
   <link rel="stylesheet" href="css/style.css" type="text/css" />
-
 </head>
 <body>
 
@@ -93,7 +93,17 @@
     </div><!-- / .container -->
   </script>
 
+  <script id="map-tpl" type="text/x-handlebars-template">
+    <div class="map">
+      <img src="images/crosshair.png" class="crosshair">
+    </div>
+    <a href="#" class="map-btn btn btn-block btn-large btn-secondary">Set Location</a>
+    <a href="#" class="map-cancel-btn btn btn-cancel">Cancel</a>
+  </script>
+
   <script id="response-form-tpl" type="text/x-handlebars-template">
+    <div id="map-region"></div>
+
     <div class="container clearfix">
 
       <div class="column-left-60">
@@ -115,10 +125,13 @@
 
           <p class="clearfix">
             <span class="column-left-60">
+              <span class="checkmark origin-check is-hidden">&#x2713;</span>
               <span class="prompt">Where did you start your journey?</span>
             </span>
             <span class="column-right-35">
-              <a href="map.html" class="btn btn-block btn-small">Select Location</a>
+              <a href="#" class="btn btn-block btn-small select-origin-btn">Select Location</a>
+              <input type="hidden" name="origin_lat">
+              <input type="hidden" name="origin_lng">
             </span>
           </p>
           <p>
@@ -139,10 +152,13 @@
 
           <p class="clearfix">
             <span class="column-left-60">
+              <span class="checkmark dest-check is-hidden">&#x2713;</span>
               <span class="prompt">Where is your final destination?</span>
             </span>
             <span class="column-right-35">
-              <a href="map.html" class="btn btn-block btn-small">Select Location</a>
+              <a href="#" class="btn btn-block btn-small select-dest-btn">Select Location</a>
+              <input type="hidden" name="destination_lat">
+              <input type="hidden" name="destination_lng">
             </span>
           </p>
           <p>
@@ -227,6 +243,7 @@
   <script src="lib/backbone.localStorage.js"></script>
   <script src="lib/moment.min.js"></script>
   <script src="lib/handlebars.js"></script>
+  <script src="lib/leaflet-0.6.4/leaflet.js"></script>
 
   <script src="js/utils.js"></script>
   <script src="js/handlebars-helpers.js"></script>

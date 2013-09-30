@@ -18,6 +18,7 @@ var OdCapture = OdCapture || {};
       var model = NS.app.surveyCollection.get(id);
 
       if (model) {
+        window.scrollTo(0, 0);
         NS.app.mainRegion.show(new NS.ResponseFormView({
           model: model
         }));
@@ -28,18 +29,21 @@ var OdCapture = OdCapture || {};
     'surveyForm': function(id) {
       var model = NS.app.surveyCollection.get(id);
 
+      window.scrollTo(0, 0);
       NS.app.mainRegion.show(new NS.SurveyFormView({
         collection: NS.app.surveyCollection,
         model: model
       }));
     },
     'surveyList': function() {
+      window.scrollTo(0, 0);
       NS.app.mainRegion.show(new NS.SurveyCollectionView({
         collection: NS.app.surveyCollection
       }));
     },
     'anything': function() {
       // Default to the survey list
+      window.scrollTo(0, 0);
       this.surveyList();
       NS.app.router.navigate('surveys', {replace: true});
     }

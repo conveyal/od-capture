@@ -41,10 +41,82 @@ var OdCapture = OdCapture || {};
     }
   };
 
-  NS.ResponseFormView = Backbone.Marionette.ItemView.extend({
-    template: '#response-form-tpl',
+  NS.MapView = Backbone.Marionette.ItemView.extend({
+    template: '#map-tpl',
+    className: 'map-container',
     events: {
-      'submit form': 'saveResponse'
+      'click .map-cancel-btn': 'hide',
+      'click .map-btn': 'setCenter'
+    },
+    onShow: function() {
+      var el = this.$el.find('.map').get(0);
+
+      this.map = L.map(el).setView([14.5995124, 120.9842195], 13);
+
+      // Because close clobbers the events
+      this.delegateEvents();
+
+      // add an OpenStreetMap tile layer
+      L.tileLayer('http://{s}.tiles.mapbox.com/v3/conveyal.map-l6w1x0sp/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors, CC-BY-SA. <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+      }).addTo(this.map);
+    },
+    hide: function(evt) {
+      evt.preventDefault();
+      this.close();
+    },
+    setCenter: function(evt) {
+      evt.preventDefault();
+      var center = this.map.getCenter();
+
+      this.trigger('setcenter', center.lat, center.lng);
+      this.close();
+    }
+  });
+
+  NS.ResponseFormView = Backbone.Marionette.Layout.extend({
+    template: '#response-form-tpl',
+    ui: {
+      '$originLat': 'input[name=origin_lat]',
+      '$originLng': 'input[name=origin_lng]',
+      '$originCheck': '.origin-check',
+      '$destLat': 'input[name=destination_lat]',
+      '$destLng': 'input[name=destination_lng]',
+      '$destCheck': '.dest-check'
+    },
+    regions: {
+      mapRegion: '#map-region'
+    },
+    events: {
+      'submit form': 'saveResponse',
+      'click .select-origin-btn': 'selectOrigin',
+      'click .select-dest-btn': 'selectDestination'
+    },
+    initialize: function() {
+      var self = this;
+
+      this.originMapView = new NS.MapView();
+      this.originMapView.on('setcenter', function(lat, lng) {
+        self.ui.$originLat.val(lat);
+        self.ui.$originLng.val(lng);
+        self.ui.$originCheck.removeClass('is-hidden');
+      });
+
+      this.destMapView = new NS.MapView();
+      this.destMapView.on('setcenter', function(lat, lng) {
+        self.ui.$destLat.val(lat);
+        self.ui.$destLng.val(lng);
+        self.ui.$destCheck.removeClass('is-hidden');
+      });
+
+    },
+    selectOrigin: function(evt) {
+      evt.preventDefault();
+      this.mapRegion.show(this.originMapView);
+    },
+    selectDestination: function(evt) {
+      evt.preventDefault();
+      this.mapRegion.show(this.destMapView);
     },
     saveResponse: function(evt) {
       evt.preventDefault();
