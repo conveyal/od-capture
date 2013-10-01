@@ -212,7 +212,7 @@ var OdCapture = OdCapture || {};
         var fileTransfer = new FileTransfer(),
             rootPath = this.fileSystem.root.fullPath,
             tileUrls = NS.Util.getTileUrls(
-              'http://api.tiles.mapbox.com/v3/conveyal.map-l6w1x0sp',
+              'http://api.tiles.mapbox.com/v3/' + NS.Config.map_key,
               NS.Config.map_north, NS.Config.map_west,
               NS.Config.map_south, NS.Config.map_east,
               NS.Config.map_min, NS.Config.map_max
@@ -221,11 +221,7 @@ var OdCapture = OdCapture || {};
 
         if (window.confirm(confirmation)) {
           NS.Util.rmDir(self.fileSystem, path, function() {
-            window.alert(path + '/ has been deleted.');
-
-            console.log(tileUrls);
             path = NS.Util.getAbsolutePath(self.fileSystem, path);
-            console.log(path);
 
             NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,
               function() {
@@ -235,12 +231,12 @@ var OdCapture = OdCapture || {};
                 self.ui.$status.text((percent * 100.0).toFixed() + '%');
               },
               function() {
-                window.alert('error downloading');
+                window.alert('An error occurred while downloading the new tiles.');
               }
             );
           },
           function() {
-            window.alert('An error occurred while deleting ' + path + '/');
+            window.alert('An error occurred while deleting the old tiles.');
           });
         }
       }
