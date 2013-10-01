@@ -196,8 +196,11 @@ var OdCapture = OdCapture || {};
                 lat, lng, lat, lng, minZ, maxZ);
 
           console.log(tileUrls);
+          if (rootPath[rootPath.length-1] != '/') {
+            console.log('add a slash');
+            rootPath += '/';
+          }
           path = rootPath + path;
-
           console.log(path);
 
           NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,
