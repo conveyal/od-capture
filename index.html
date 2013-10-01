@@ -129,12 +129,12 @@
     <div class="container clearfix">
 
       <form>
-        <fieldset>
 
+        <fieldset>
           <p class="clearfix">
             <span class="column-left-60">
               <span class="checkmark origin-check is-hidden">&#x2713;</span>
-              <span class="prompt">Where did you start your journey?</span>
+              <span class="prompt location-prompt">Where did you start your journey?</span>
             </span>
             <span class="column-right-35">
               <a href="#" class="btn btn-primary btn-block btn-small select-origin-btn">Select&nbsp;Location</a>
@@ -142,9 +142,13 @@
               <input type="hidden" name="origin_lng">
             </span>
           </p>
+        </fieldset>
+
+        <fieldset>
+          <p><span class="prompt">What is your reason for being there?<span class="prompt"></p>
           <p>
             <select name="origin_reason" class="select-block">
-              <option value="">What is your reason for being there?</option>
+              <option value=""></option>
               <option>Home</option>
               <option>Work/Business</option>
               <option>Shopping</option>
@@ -154,14 +158,13 @@
               <option>Other</option>
             </select>
           </p>
-
         </fieldset>
-        <fieldset>
 
+        <fieldset>
           <p class="clearfix">
             <span class="column-left-60">
               <span class="checkmark dest-check is-hidden">&#x2713;</span>
-              <span class="prompt">Where is your final destination?</span>
+              <span class="prompt location-prompt">Where is your final destination?</span>
             </span>
             <span class="column-right-35">
               <a href="#" class="btn btn-primary btn-block btn-small select-dest-btn">Select&nbsp;Location</a>
@@ -169,9 +172,13 @@
               <input type="hidden" name="destination_lng">
             </span>
           </p>
+        </fieldset>
+
+        <fieldset>
+          <p><span class="prompt">What is your reason for going there?</span></p>
           <p>
             <select name="destination_reason" class="select-block">
-              <option value="">What is your reason for going there?</option>
+              <option value=""></option>
               <option>Home</option>
               <option>Work/Business</option>
               <option>Shopping</option>
@@ -181,24 +188,25 @@
               <option>Other</option>
             </select>
           </p>
-
         </fieldset>
+
         <fieldset>
-
-          <p>How many different vehicles will you use to complete this journey?</p>
-          <p><select name="vehicle_count" class="select-block">
-            <option value="1">1 Vehicle</option>
-            <option value="2">2 Vehicles</option>
-            <option value="3">3 Vehicles</option>
-            <option value="4">4 Vehicles</option>
-            <option value="5">5 Vehicles</option>
-            <option value="6">6 Vehicles</option>
-          </select></p>
-
+          <p><span class="prompt">How many different vehicles will you use to complete this journey?</span></p>
+          <p>
+            <select name="vehicle_count" class="select-block">
+              <option value=""></option>
+              <option value="1">1 Vehicle</option>
+              <option value="2">2 Vehicles</option>
+              <option value="3">3 Vehicles</option>
+              <option value="4">4 Vehicles</option>
+              <option value="5">5 Vehicles</option>
+              <option value="6">6 Vehicles</option>
+            </select>
+          </p>
         </fieldset>
-        <fieldset>
 
-          <p>Which types of vehicle will you have used when you complete this journey?</p>
+        <fieldset>
+          <p><span class="prompt">Which types of vehicle will you have used when you complete this journey?</span></p>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Jeepney">&nbsp;Jeepney</label>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Non-Aircon Bus">&nbsp;Non-Aircon Bus</label>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Aircon Bus">&nbsp;Aircon Bus</label>
@@ -209,19 +217,24 @@
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Taxi">&nbsp;Taxi</label>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Car">&nbsp;Car</label>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Other">&nbsp;Other</label>
-
         </fieldset>
+
         <fieldset>
-
-          <p>How many Pesos will this journey have cost you?</p>
-          <p><input type="number" min="0" name="cost" class="input-block" placeholder="Cost of journey..."></p>
-
+          <p>
+            <span class="column-left-75">
+              <span class="prompt">How many Pesos will this journey have cost you?</span>
+            </span>
+            <span class="column-right-20">
+              <input type="number" min="0" name="cost" class="input-block">
+            </span>
+          </p>
         </fieldset>
-        <fieldset>
 
-          <p>How often do you make this journey?</p>
+        <fieldset>
+          <p><span class="prompt">How often do you make this journey?</span></p>
           <p>
             <select name="frequency" class="select-block">
+              <option value=""></option>
               <option>7 days per week</option>
               <option>5-6 days per week</option>
               <option>2-4 days per week</option>
@@ -230,7 +243,6 @@
               <option>Every 3 weeks or less</option>
             </select>
           </p>
-
         </fieldset>
 
         <button type="submit" class="btn btn-block btn-large btn-primary">Submit Response</button>

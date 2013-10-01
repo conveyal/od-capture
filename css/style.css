@@ -168,6 +168,9 @@ fieldset {
 fieldset + fieldset {
   margin-top: -1em;
 }
+fieldset p:last-child {
+  margin-bottom: 0;
+}
 .input-block,
 textarea {
   -webkit-box-sizing: border-box;
@@ -185,6 +188,7 @@ textarea {
   width: 100%;
   height: 2em;
   font-size: 1em;
+  border-radius: 0;
   -webkit-appearance: menulist-button;
 }
 .input-block:focus,
@@ -233,15 +237,27 @@ textarea {
   margin-top: -2em;
 }
 
-.column-right-35 {
+.column-right-35,
+.column-right-20 {
   float: right;
+  position: relative;
+}
+.column-right-35 {
   width: 35%;
+}
+.column-right-20 {
+  width: 20%;
+}
+.column-left-60,
+.column-left-75 {
+  float: left;
   position: relative;
 }
 .column-left-60 {
-  float: left;
   width: 60%;
-  position: relative;
+}
+.column-left-75 {
+  width: 75%;
 }
 
 ul.survey-list {
@@ -307,6 +323,9 @@ h2 + .survey-meta {
   margin: 0.25em -0.25em 0 0.25em;
 }
 .prompt {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+.location-prompt {
   display: block;
   margin-top: 0.5em;
 }
