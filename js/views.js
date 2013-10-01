@@ -56,10 +56,13 @@ var OdCapture = OdCapture || {};
           path = 'tiles',
           tileUrl;
 
-      this.map = L.map(el).fitBounds(
-        [[NS.Config.map_south, NS.Config.map_west], [NS.Config.map_north, NS.Config.map_east]],
-        NS.Config.map_min
-      );
+      this.map = L.map(el, {
+          minZoom: NS.Config.map_min,
+          maxZoom: NS.Config.map_max
+        }).fitBounds(
+          [[NS.Config.map_south, NS.Config.map_west], [NS.Config.map_north, NS.Config.map_east]],
+          NS.Config.map_min
+        );
 
       // Because close clobbers the events
       this.delegateEvents();
@@ -72,7 +75,7 @@ var OdCapture = OdCapture || {};
 
       // add an OpenStreetMap tile layer
       L.tileLayer(tileUrl, {
-          attribution: '&copy; OpenStreetMap contributors, CC-BY-SA. <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+        attribution: '&copy; OpenStreetMap contributors, CC-BY-SA. <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
       }).addTo(this.map);
     },
     hide: function(evt) {
