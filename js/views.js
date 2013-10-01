@@ -48,6 +48,9 @@ var OdCapture = OdCapture || {};
       'click .map-cancel-btn': 'hide',
       'click .map-btn': 'setCenter'
     },
+    initialize: function() {
+      this.fileSystem = this.options.fileSystem;
+    },
     onShow: function() {
       var el = this.$el.find('.map').get(0),
           path = 'tiles',
@@ -62,7 +65,7 @@ var OdCapture = OdCapture || {};
       this.delegateEvents();
 
       if (this.fileSystem) {
-        tileUrl = NS.Util.getLocalTilePath(NS.Util.getAbsolutePath(this.fileSystem, path), NS.Config.map_key);
+        tileUrl = NS.Util.getLocalTileUrl(NS.Util.getAbsolutePath(this.fileSystem, path), NS.Config.map_key);
       } else {
         tileUrl = 'http://{s}.tiles.mapbox.com/v3/' + NS.Config.map_key + '/{z}/{x}/{y}.png';
       }
@@ -106,14 +109,18 @@ var OdCapture = OdCapture || {};
     initialize: function() {
       var self = this;
 
-      this.originMapView = new NS.MapView();
+      this.originMapView = new NS.MapView({
+        fileSystem: this.options.fileSystem
+      });
       this.originMapView.on('setcenter', function(lat, lng) {
         self.ui.$originLat.val(lat);
         self.ui.$originLng.val(lng);
         self.ui.$originCheck.removeClass('is-hidden');
       });
 
-      this.destMapView = new NS.MapView();
+      this.destMapView = new NS.MapView({
+        fileSystem: this.options.fileSystem
+      });
       this.destMapView.on('setcenter', function(lat, lng) {
         self.ui.$destLat.val(lat);
         self.ui.$destLng.val(lng);
