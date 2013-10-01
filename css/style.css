@@ -13,14 +13,19 @@ body {
   font-size: 125%;
   line-height: 1.5;
   color: #fff;
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
 }
 select, input, textarea {
   color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
 }
 h1,h2,h3,h4,h5,h6 {
-  margin: 0 0 0.25em 0;
-  font-weight: 100;
+  margin: 0 0 0.325em 0;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 300;
+  line-height: 1.25;
 }
 h1 { font-size: 2em; }
 h2 { font-size: 2em; }
@@ -30,8 +35,12 @@ h5 { font-size: 1.25em; }
 h6 { font-size: 1em; text-transform: uppercase; }
 
 a:hover, a:active { outline: none; }
-a, a:active, a:visited { color: #00aaff; }
+a, a:active, a:visited { 
+  color: #00aaff; 
+  text-decoration: none;
+}
 a:hover {}
+
 p { margin: 0 0 1.2em; }
 ul, ol { margin-left: 1.8em; }
 ol { list-style-type: decimal; }
@@ -46,7 +55,7 @@ ul.unstyled-list li, ol.unstyled-list li {
 /*  padding-bottom: 0;*/
 }
 strong {
-  font-weight: 800;
+  font-weight: 700;
 }
 hr {
   margin: 1.5em 0;
@@ -86,11 +95,12 @@ img {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  color: #fff;
-  font-weight: bold;
+  color: #444;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700;
   text-decoration: none;
   text-transform: uppercase;
-  background-color: #308fbf;
+  background-color: #eee;
   box-shadow: 0 0.25em 0 rgba(0,0,0,0.25);
   border: 0;
   border-radius: 0.25em;
@@ -164,7 +174,7 @@ textarea {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   width: 100%;
-  border: 0.25em solid #406a80;
+/*  border: 0.125em solid #406a80;*/
   padding: 0.5em;
   outline: 0;
 }
@@ -234,23 +244,23 @@ textarea {
   position: relative;
 }
 
-ul.session-list {
+ul.survey-list {
   margin: 0 -1em 1em;
   clear: both;
 }
-ul.session-list li {
+ul.survey-list li {
   padding: 1em;
   background: rgba(255,255,255,0.05);
   border-top: 1px solid rgba(255,255,255,0.1);
   border-bottom: 1px solid rgba(0,0,0,0.25);
 }
 
-.session-meta {
+.survey-meta {
   color: #bbb;
   font-size: 0.85em;
   font-weight: 300;
 }
-h2 + .session-meta {
+h2 + .survey-meta {
   margin-top: -0.75em;
 }
 
@@ -260,18 +270,22 @@ h2 + .session-meta {
   color: #fff;
   font-size: 1.325em;
 }
-.vehicle-type {}
+.vehicle-type {
+  margin-right: 0.25em;
+}
 
 .timestamp {
   display: block;
   font-size: 0.625em;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 100;
   text-transform: uppercase;
 }
-.timestamp strong {
-  color: #ddd;
-}
-.session-edit-link {
+.timestamp strong {}
+
+.survey-edit-link {
   font-size: 0.85em;
+  font-weight: 400;
 }
 
 .survey-count {
@@ -346,7 +360,7 @@ h2 + .session-meta {
   height: 1em;
   width: 1em;
   font-size: 2em;
-  font-weight: bold;
+  font-weight: 900;
   text-align: center;
   line-height: 1em;
   background: rgba(255,255,255,0.8);

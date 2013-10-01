@@ -14,6 +14,10 @@
   <link rel="stylesheet" href="lib/leaflet-0.6.4/leaflet.css" />
   <link rel="stylesheet" href="css/normalize.css" type="text/css" />
   <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <!-- TODO: This is a Andoriod system font. We don't need to include this for Nexus tablets, it's here for testing in browsers. -->
+  <link href='http://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic|Roboto+Condensed:300italic,400italic,700italic,300,400,700' rel='stylesheet' type='text/css'>
+
 </head>
 <body>
 
@@ -27,7 +31,7 @@
       <a href="/surveys/{{ id }}" class="survey-edit-link">EDIT</a>
     </div>
     <div class="column-right-35">
-      <a href="/surveys/{{ id }}/new" class="btn btn-block btn-small">+ Response</a>
+      <a href="/surveys/{{ id }}/new" class="btn btn-primary btn-block btn-small">+ Response</a>
     </div>
   </script>
 
@@ -46,7 +50,7 @@
 
     <div class="container clearfix">
 
-      <ul class="survey-list unstyled-list">
+    <ul class="survey-list unstyled-list">
       </ul>
     </div><!-- / .container -->
 
@@ -112,7 +116,7 @@
 
       <div class="column-left-60">
         <h2>{{ route }}</h2>
-        <div class="session-meta">
+        <div class="survey-meta">
           <span class="surveyor-name">{{ surveyor }}</span>,
           <span class="vehicle-type">{{ vehicle_type }}</span>
         </div>
@@ -133,7 +137,7 @@
               <span class="prompt">Where did you start your journey?</span>
             </span>
             <span class="column-right-35">
-              <a href="#" class="btn btn-block btn-small select-origin-btn">Select Location</a>
+              <a href="#" class="btn btn-primary btn-block btn-small select-origin-btn">Select&nbsp;Location</a>
               <input type="hidden" name="origin_lat">
               <input type="hidden" name="origin_lng">
             </span>
@@ -160,7 +164,7 @@
               <span class="prompt">Where is your final destination?</span>
             </span>
             <span class="column-right-35">
-              <a href="#" class="btn btn-block btn-small select-dest-btn">Select Location</a>
+              <a href="#" class="btn btn-primary btn-block btn-small select-dest-btn">Select&nbsp;Location</a>
               <input type="hidden" name="destination_lat">
               <input type="hidden" name="destination_lng">
             </span>
@@ -195,16 +199,16 @@
         <fieldset>
 
           <p>Which types of vehicle will you have used when you complete this journey?</p>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Jeepney">Jeepney</label>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Non-Aircon Bus">Non-Aircon Bus</label>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Aircon Bus">Aircon Bus</label>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="AUV">AUV</label>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Tricycle">Tricycle</label>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="MRT">MRT</label>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="LRT">LRT</label>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Taxi">Taxi</label>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Car">Car</label>
-          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Other">Other</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Jeepney">&nbsp;Jeepney</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Non-Aircon Bus">&nbsp;Non-Aircon Bus</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Aircon Bus">&nbsp;Aircon Bus</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="AUV">&nbsp;AUV</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Tricycle">&nbsp;Tricycle</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="MRT">&nbsp;MRT</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="LRT">&nbsp;LRT</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Taxi">&nbsp;Taxi</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Car">&nbsp;Car</label>
+          <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Other">&nbsp;Other</label>
 
         </fieldset>
         <fieldset>
