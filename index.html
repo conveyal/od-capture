@@ -49,13 +49,11 @@
     </div><!-- / .container -->
 
     <div class="container clearfix">
-
-    <ul class="survey-list unstyled-list">
-      </ul>
+      <ul class="survey-list unstyled-list"></ul>
     </div><!-- / .container -->
 
     <div class="container clearfix">
-      <a href="/admin">Admin</a>
+      <a href="/admin" class="admin-btn">Admin</a>
     </div>
   </script>
 
@@ -137,7 +135,7 @@
               <span class="prompt location-prompt">Where did you start your journey?</span>
             </span>
             <span class="column-right-35">
-              <a href="#" class="btn btn-primary btn-block btn-small select-origin-btn">Select&nbsp;Location</a>
+              <a href="#" class="btn btn-primary btn-block btn-small select-origin-btn">Select Location</a>
               <input type="hidden" name="origin_lat">
               <input type="hidden" name="origin_lng">
             </span>
@@ -145,7 +143,7 @@
         </fieldset>
 
         <fieldset>
-          <p><span class="prompt">What is your reason for being there?<span class="prompt"></p>
+          <p><span class="prompt">What was your reason for being there?<span class="prompt"></p>
           <p>
             <select name="origin_reason" class="select-block">
               <option value=""></option>
@@ -160,14 +158,14 @@
           </p>
         </fieldset>
 
-        <fieldset>
+        <fieldset class="invalid"><!-- TODO: Add this class when validation fails. -->
           <p class="clearfix">
             <span class="column-left-60">
               <span class="checkmark dest-check is-hidden">&#x2713;</span>
               <span class="prompt location-prompt">Where is your final destination?</span>
             </span>
             <span class="column-right-35">
-              <a href="#" class="btn btn-primary btn-block btn-small select-dest-btn">Select&nbsp;Location</a>
+              <a href="#" class="btn btn-primary btn-block btn-small select-dest-btn">Select Location</a>
               <input type="hidden" name="destination_lat">
               <input type="hidden" name="destination_lng">
             </span>
@@ -206,7 +204,7 @@
         </fieldset>
 
         <fieldset>
-          <p><span class="prompt">Which types of vehicle will you have used when you complete this journey?</span></p>
+          <p><span class="prompt">Which types of vehicles will you use to complete this journey?</span></p>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Jeepney">&nbsp;Jeepney</label>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Non-Aircon Bus">&nbsp;Non-Aircon Bus</label>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Aircon Bus">&nbsp;Aircon Bus</label>
@@ -221,10 +219,10 @@
 
         <fieldset>
           <p>
-            <span class="column-left-75">
+            <span class="column-left-72">
               <span class="prompt">How many Pesos will this journey have cost you?</span>
             </span>
-            <span class="column-right-20">
+            <span class="column-right-23">
               <input type="number" min="0" name="cost" class="input-block">
             </span>
           </p>
@@ -260,13 +258,15 @@
         <a href="/surveys" class="btn btn-block btn-cancel">Back</a>
       </div>
 
+      <div class="section clearfix">
+        <div class="column-left-60">
+          <button id="refresh-tiles-btn" class="btn btn-block btn-large btn-primary">Update Map Tiles</button>
+          </div>
+        <div class="column-right-35">
+          <p class="download-status"></p>
+        </div>
+      </div>
 
-      <div class="column-left-60">
-        <button id="refresh-tiles-btn" class="btn btn-block btn-large btn-primary">Update Map Tiles</button>
-      </div>
-      <div class="column-right-35">
-        <p class="download-status"></p>
-      </div>
     </div>
   </script>
 
