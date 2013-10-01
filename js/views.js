@@ -174,6 +174,9 @@ var OdCapture = OdCapture || {};
 
   NS.AdminView = Backbone.Marionette.ItemView.extend({
     template: '#admin-tpl',
+    ui: {
+      '$status': '.download-status'
+    },
     events: {
       'click #refresh-tiles-btn': 'refreshTiles'
     },
@@ -181,46 +184,50 @@ var OdCapture = OdCapture || {};
       this.fileSystem = this.options.fileSystem;
     },
     refreshTiles: function() {
-      var path = 'tiles';
+      var self = this,
+          path = 'tiles';
 
       if (this.fileSystem) {
         var fileTransfer = new FileTransfer(),
-            rootPath = this.fileSystem.root.fullPath;
+            rootPath = this.fileSystem.root.fullPath,
+            tileUrls = NS.Util.getTileUrls(
+              'http://api.tiles.mapbox.com/v3/conveyal.map-l6w1x0sp',
+              NS.Config.map_north, NS.Config.map_west,
+              NS.Config.map_south, NS.Config.map_east,
+              NS.Config.map_min, NS.Config.map_max
+            ),
+            confirmation = 'Delete all tiles and download ' + tileUrls.length + ' new tiles?';
 
-        NS.Util.rmDir(this.fileSystem, path, function() {
-          window.alert(path + '/ has been deleted.');
+        if (window.confirm(confirmation)) {
+          NS.Util.rmDir(this.fileSystem, path, function() {
+            window.alert(path + '/ has been deleted.');
 
-          var minZ = 14, maxZ = 15, lat = 39.952912, lng = -75.163822,
-              tileUrls = NS.Util.getTileUrls(
-                'http://api.tiles.mapbox.com/v3/conveyal.map-l6w1x0sp',
-                lat, lng, lat, lng, minZ, maxZ);
-
-          console.log(tileUrls);
-          if (rootPath[rootPath.length-1] != '/') {
-            console.log('add a slash');
-            rootPath += '/';
-          }
-          path = rootPath + path;
-          console.log(path);
-
-          NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,
-            function() {
-              console.log(arguments);
-              window.alert('successful download');
-            },
-            function(fileTransfer, percent) {
-              console.log(arguments);
-              window.alert('percent ' + percent);
-            },
-            function() {
-              console.log(arguments);
-              window.alert('error downloading');
+            console.log(tileUrls);
+            if (rootPath[rootPath.length-1] != '/') {
+              rootPath += '/';
             }
-          );
-        },
-        function() {
-          window.alert('An error occurred while deleting ' + path + '/');
-        });
+            path = rootPath + path;
+            console.log(path);
+
+            NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,
+              function() {
+                console.log(arguments);
+                window.alert('successful download');
+              },
+              function(fileTransfer, percent) {
+                console.log(arguments);
+                self.ui.$status.text((percent * 100.0) + '%');
+              },
+              function() {
+                console.log(arguments);
+                window.alert('error downloading');
+              }
+            );
+          },
+          function() {
+            window.alert('An error occurred while deleting ' + path + '/');
+          });
+        }
       }
     }
   });
