@@ -4,7 +4,7 @@ var OdCapture = OdCapture || {};
   NS.Config = {
     "study_id"   : "123ABC",                   // a unique ID attached to all data captured as part of this study
     "study_name" : "Manila O/D data capture",  //  name of study
-    "map_key"    : "conveyal.map-123adf",      // a Mabox map key
+    "map_key"    : "conveyal.map-l6w1x0sp",    // a Mapbox map key
     "map_north"  : 14.606384,                  // latlng boundary for map download
     "map_east"   : 120.999899,                 // latlng boundary for map download
     "map_south"  : 14.574737,                  // latlng boundary for map download

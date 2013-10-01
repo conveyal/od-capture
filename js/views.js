@@ -1,4 +1,4 @@
-/*globals Backbone */
+/*globals Backbone L FileTransfer */
 
 var OdCapture = OdCapture || {};
 
@@ -49,15 +49,26 @@ var OdCapture = OdCapture || {};
       'click .map-btn': 'setCenter'
     },
     onShow: function() {
-      var el = this.$el.find('.map').get(0);
+      var el = this.$el.find('.map').get(0),
+          path = 'tiles',
+          tileUrl;
 
-      this.map = L.map(el).setView([14.5995124, 120.9842195], 13);
+      this.map = L.map(el).fitBounds(
+        [[NS.Config.map_south, NS.Config.map_west], [NS.Config.map_north, NS.Config.map_east]],
+        NS.Config.map_min
+      );
 
       // Because close clobbers the events
       this.delegateEvents();
 
+      if (this.fileSystem) {
+        tileUrl = NS.Util.getLocalTilePath(NS.Util.getAbsolutePath(this.fileSystem, path), NS.Config.map_key);
+      } else {
+        tileUrl = 'http://{s}.tiles.mapbox.com/v3/' + NS.Config.map_key + '/{z}/{x}/{y}.png';
+      }
+
       // add an OpenStreetMap tile layer
-      L.tileLayer('http://{s}.tiles.mapbox.com/v3/conveyal.map-l6w1x0sp/{z}/{x}/{y}.png', {
+      L.tileLayer(tileUrl, {
           attribution: '&copy; OpenStreetMap contributors, CC-BY-SA. <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
       }).addTo(this.map);
     },
@@ -203,10 +214,7 @@ var OdCapture = OdCapture || {};
             window.alert(path + '/ has been deleted.');
 
             console.log(tileUrls);
-            if (rootPath[rootPath.length-1] != '/') {
-              rootPath += '/';
-            }
-            path = rootPath + path;
+            path = NS.Util.getAbsolutePath(this.fileSystem, path);
             console.log(path);
 
             NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,

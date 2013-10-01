@@ -67,12 +67,17 @@ var OdCapture = OdCapture || {};
       return urls;
     },
 
-    getLocalTilePath: function(fileSystem, mapId) {
+    getAbsolutePath: function(fileSystem, dirName) {
       var rootDir = fileSystem.root.fullPath;
       if (rootDir[rootDir.length-1] !== '/') {
         rootDir += '/';
       }
-      return rootDir + 'tiles/' + mapId + '/{z}/{x}/{y}.png';
+
+      return rootDir + dirName;
+    },
+
+    getLocalTileUrl: function(dirPath, mapId) {
+      return dirPath + '/' + mapId + '/{z}/{x}/{y}.png';
     },
 
     rmDir: function(fileSystem, dirName, success, error) {
