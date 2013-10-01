@@ -210,24 +210,21 @@ var OdCapture = OdCapture || {};
             confirmation = 'Delete all tiles and download ' + tileUrls.length + ' new tiles?';
 
         if (window.confirm(confirmation)) {
-          NS.Util.rmDir(this.fileSystem, path, function() {
+          NS.Util.rmDir(self.fileSystem, path, function() {
             window.alert(path + '/ has been deleted.');
 
             console.log(tileUrls);
-            path = NS.Util.getAbsolutePath(this.fileSystem, path);
+            path = NS.Util.getAbsolutePath(self.fileSystem, path);
             console.log(path);
 
             NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,
               function() {
-                console.log(arguments);
-                window.alert('successful download');
+                self.ui.$status.text('100%');
               },
               function(fileTransfer, percent) {
-                console.log(arguments);
-                self.ui.$status.text((percent * 100.0) + '%');
+                self.ui.$status.text((percent * 100.0).toFixed() + '%');
               },
               function() {
-                console.log(arguments);
                 window.alert('error downloading');
               }
             );
