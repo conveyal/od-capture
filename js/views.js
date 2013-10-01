@@ -153,7 +153,7 @@ var OdCapture = OdCapture || {};
   });
 
   NS.EmptySurveyCollectionView  = Backbone.Marionette.ItemView.extend({
-    template: '#emtpy-survey-collection-tpl',
+    template: '#empty-survey-collection-tpl',
     tagName: 'li',
     className: 'clearfix'
   });
@@ -170,6 +170,45 @@ var OdCapture = OdCapture || {};
     itemViewContainer: '.survey-list',
     emptyView: NS.EmptySurveyCollectionView,
     appendHtml: NS.OrderedCollectionMixin.appendHtml
+  });
+
+  NS.AdminView = Backbone.Marionette.ItemView.extend({
+    template: '#admin-tpl',
+    events: {
+      'click #refresh-tiles-btn': 'refreshTiles'
+    },
+    initialize: function() {
+      this.fileSystem = this.options.fileSystem;
+    },
+    refreshTiles: function() {
+      var dir = 'tiles';
+
+      if (this.fileSystem) {
+        NS.Util.rmDir(this.fileSystem, dir, function() {
+          window.alert(dir + ' has been deleted.');
+
+          var minZ = 14, maxZ = 15, lat = 39.952912, lng = -75.163822,
+              tileUrls = NS.Util.getTileUrls(
+                'http://api.tiles.mapbox.com/v3/conveyal.map-l6w1x0sp',
+                lat, lng, lat, lng, minZ, maxZ);
+
+          NS.Util.downloadFiles(tileUrls, dir,
+            function() {
+              window.alert('successful download');
+            },
+            function(percent) {
+              window.alert('percent ' + percent);
+            },
+            function() {
+              window.alert('error');
+            }
+          );
+        },
+        function() {
+          window.alert('An error occurred while deleting ' + dir);
+        });
+      }
+    }
   });
 
 }(OdCapture));

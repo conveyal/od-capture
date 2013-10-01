@@ -49,9 +49,13 @@
       <ul class="survey-list unstyled-list">
       </ul>
     </div><!-- / .container -->
+
+    <div class="container clearfix">
+      <a href="/admin">Admin</a>
+    </div>
   </script>
 
-  <script id="emtpy-survey-collection-tpl" type="text/x-handlebars-template">
+  <script id="empty-survey-collection-tpl" type="text/x-handlebars-template">
       <p>No active surveys. <a href="/surveys/new">Start a new one!</a></p>
   </script>
 
@@ -231,6 +235,10 @@
     </div><!-- / .container -->
   </script>
 
+  <script id="admin-tpl" type="text/x-handlebars-template">
+    <button id="refresh-tiles-btn" class="btn btn-block btn-large btn-primary">Update Map Tiles</button>
+  </script>
+
 
   <div id="main-region"></div>
 
@@ -245,6 +253,7 @@
   <script src="lib/handlebars.js"></script>
   <script src="lib/leaflet-0.6.4/leaflet.js"></script>
 
+  <script src="js/config.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/handlebars-helpers.js"></script>
   <script src="js/models.js"></script>

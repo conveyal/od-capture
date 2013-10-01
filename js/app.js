@@ -1,4 +1,4 @@
-/*globals Backbone jQuery */
+/*globals Backbone jQuery LocalFileSystem */
 
 var OdCapture = OdCapture || {};
 
@@ -9,6 +9,7 @@ var OdCapture = OdCapture || {};
       'surveys/:id': 'surveyForm',
       'surveys/:id/new': 'responseForm',
       'surveys': 'surveyList',
+      'admin': 'admin',
       '*anything': 'anything'
     }
   });
@@ -20,7 +21,8 @@ var OdCapture = OdCapture || {};
       if (model) {
         window.scrollTo(0, 0);
         NS.app.mainRegion.show(new NS.ResponseFormView({
-          model: model
+          model: model,
+          fileSystem: NS.app.fileSystem
         }));
       } else {
         this.anything();
@@ -39,6 +41,12 @@ var OdCapture = OdCapture || {};
       window.scrollTo(0, 0);
       NS.app.mainRegion.show(new NS.SurveyCollectionView({
         collection: NS.app.surveyCollection
+      }));
+    },
+    'admin': function() {
+      window.scrollTo(0, 0);
+      NS.app.mainRegion.show(new NS.AdminView({
+        fileSystem: NS.app.fileSystem
       }));
     },
     'anything': function() {
@@ -91,7 +99,23 @@ var OdCapture = OdCapture || {};
 
   // Init =====================================================================
   $(function() {
-    NS.app.start();
+    // For local testing. Assumed to not exist in production.
+    if (NS.Config.is_browser) {
+      NS.app.start();
+    } else {
+      document.addEventListener('deviceready', function(evt) {
+        window.requestFileSystem(
+            LocalFileSystem.PERSISTENT, 0,
+            function(fs) {
+              NS.app.fileSystem = fs;
+              NS.app.start();
+            },
+            function() {
+              window.alert('Unable to access the file system.');
+            }
+        );
+      });
+    }
   });
 
 }(OdCapture, jQuery));
