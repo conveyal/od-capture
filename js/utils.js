@@ -84,57 +84,29 @@ var OdCapture = OdCapture || {};
       );
     },
 
-    downloadFiles: function(urls, targetDir, success, progress, error) {
-      /*
-       * Bulk download of urls to the targetDir (relative path from root)
-       */
-      window.requestFileSystem(
-        LocalFileSystem.PERSISTENT, 0,
-        function(fileSystem) { //success
-            var rootDir = fileSystem.root.fullPath,
-                dirPath;
+    bulkDownload: function(fileTransfer, urls, index, dirPath, success, progress, error) {
+      var regex = /\/(\w+\.map-\w+\/\d+\/\d+\/\d+\.png$)/, // user.map-1234asdf/15/8540/10643.png
+          url, tail, filePath;
 
-            if (rootDir[rootDir.length-1] != '/') {
-              rootDir += '/';
-            }
-            dirPath = rootDir + targetDir;
-
-            NS.Utils.downloadFile(urls, 0, dirPath, success, progress, error);
-        },
-        error
-      );
-    },
-
-    downloadFile: function(urls, index, dirPath, success, progress, error) {
-      var url, tail, filePath, fileTransfer;
-
-      if (index >= urls.length) { //callback if done
-          //clear and hide modal
+      if (index >= urls.length) {
           success();
           return;
       }
 
-      //update modal progress
       if (progress) {
-        progress(index * 100.0 / urls.length);
+        progress(fileTransfer, (index / urls.length));
       }
 
       url = urls[index];
-
-      // TODO: use a regex to select the xyz ending of the url
-      // all urls start with: http://api.tiles.mapbox.com/v3/ - length 31
-      tail = url.slice(31); //something like ex.map-1234saf/15/8580/12610.png
-
+      tail = url.match(regex)[0];
       filePath = dirPath + '/' + tail;
 
-      fileTransfer = new FileTransfer();
       fileTransfer.download(url, filePath,
-          function(theFile) {
-              downloadFile(urls, index+1, dirPath, success, progress, error);
-          },
-          error
+        function(file) {
+          NS.Util.bulkDownload(fileTransfer, urls, index+1, dirPath, success, progress, error);
+        },
+        error
       );
     }
-
   };
 }(OdCapture, jQuery));

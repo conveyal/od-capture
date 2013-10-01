@@ -181,31 +181,36 @@ var OdCapture = OdCapture || {};
       this.fileSystem = this.options.fileSystem;
     },
     refreshTiles: function() {
-      var dir = 'tiles';
+      var path = 'tiles';
 
       if (this.fileSystem) {
-        NS.Util.rmDir(this.fileSystem, dir, function() {
-          window.alert(dir + ' has been deleted.');
+        var fileTransfer = new FileTransfer(),
+            rootPath = this.fileSystem.root.fullPath;
+
+        NS.Util.rmDir(this.fileSystem, path, function() {
+          window.alert(path + '/ has been deleted.');
 
           var minZ = 14, maxZ = 15, lat = 39.952912, lng = -75.163822,
               tileUrls = NS.Util.getTileUrls(
                 'http://api.tiles.mapbox.com/v3/conveyal.map-l6w1x0sp',
                 lat, lng, lat, lng, minZ, maxZ);
 
-          NS.Util.downloadFiles(tileUrls, dir,
+          path = rootPath + path;
+
+          NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,
             function() {
               window.alert('successful download');
             },
-            function(percent) {
+            function(fileTransfer, percent) {
               window.alert('percent ' + percent);
             },
             function() {
-              window.alert('error');
+              window.alert('error downloading');
             }
           );
         },
         function() {
-          window.alert('An error occurred while deleting ' + dir);
+          window.alert('An error occurred while deleting ' + path + '/');
         });
       }
     }

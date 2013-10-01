@@ -101,18 +101,27 @@ var OdCapture = OdCapture || {};
   $(function() {
     // For local testing. Assumed to not exist in production.
     if (NS.Config.is_browser) {
-      NS.app.start();
+      navigator.webkitPersistentStorage.requestQuota(1024*1024, function(grantedBytes) {
+        window.webkitRequestFileSystem(window.PERSISTENT, 0,
+          function(fs) {
+            NS.app.fileSystem = fs;
+            NS.app.start();
+          },
+          function() {
+            window.alert('Unable to access the file system.');
+          }
+        );
+      });
     } else {
       document.addEventListener('deviceready', function(evt) {
-        window.requestFileSystem(
-            LocalFileSystem.PERSISTENT, 0,
-            function(fs) {
-              NS.app.fileSystem = fs;
-              NS.app.start();
-            },
-            function() {
-              window.alert('Unable to access the file system.');
-            }
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+          function(fs) {
+            NS.app.fileSystem = fs;
+            NS.app.start();
+          },
+          function() {
+            window.alert('Unable to access the file system.');
+          }
         );
       });
     }
