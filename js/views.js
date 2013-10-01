@@ -195,16 +195,22 @@ var OdCapture = OdCapture || {};
                 'http://api.tiles.mapbox.com/v3/conveyal.map-l6w1x0sp',
                 lat, lng, lat, lng, minZ, maxZ);
 
+          console.log(tileUrls);
           path = rootPath + path;
+
+          console.log(path);
 
           NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,
             function() {
+              console.log(arguments);
               window.alert('successful download');
             },
             function(fileTransfer, percent) {
+              console.log(arguments);
               window.alert('percent ' + percent);
             },
             function() {
+              console.log(arguments);
               window.alert('error downloading');
             }
           );
