@@ -1,4 +1,4 @@
-/*globals Backbone L FileTransfer */
+/*globals _ Backbone L FileTransfer device Handlebars */
 
 var OdCapture = OdCapture || {};
 
@@ -95,10 +95,10 @@ var OdCapture = OdCapture || {};
     template: '#response-form-tpl',
     ui: {
       '$originLat': 'input[name=origin_lat]',
-      '$originLng': 'input[name=origin_lng]',
+      '$originLng': 'input[name=origin_lon]',
       '$originCheck': '.origin-check',
       '$destLat': 'input[name=destination_lat]',
-      '$destLng': 'input[name=destination_lng]',
+      '$destLng': 'input[name=destination_lon]',
       '$destCheck': '.dest-check'
     },
     regions: {
@@ -111,7 +111,20 @@ var OdCapture = OdCapture || {};
     },
     initialize: function() {
       var self = this;
+      this.data = {};
 
+      // Set some initial data
+      this.data.start_datetime = (new Date()).toISOString();
+      navigator.geolocation.getCurrentPosition(function(position) {
+        self.data.survey_lat = position.coords.latitude;
+        self.data.survey_lon = position.coords.longitude;
+      },
+      function() {
+        self.data.survey_lat = 0;
+        self.data.survey_lon = 0;
+      });
+
+      // Init the map views
       this.originMapView = new NS.MapView({
         fileSystem: this.options.fileSystem
       });
@@ -129,7 +142,6 @@ var OdCapture = OdCapture || {};
         self.ui.$destLng.val(lng);
         self.ui.$destCheck.removeClass('is-hidden');
       });
-
     },
     selectOrigin: function(evt) {
       evt.preventDefault();
@@ -143,9 +155,11 @@ var OdCapture = OdCapture || {};
       evt.preventDefault();
 
       var form = evt.target,
-          data = NS.Util.serializeObject(form).attrs;
+          data = _.extend({}, NS.Util.serializeObject(form).attrs, this.data);
 
-      data.created_datetime = (new Date()).toISOString();
+      // Implicit data properties
+      data.end_datetime = (new Date()).toISOString();
+      data.respondent_id = this.model.get('responses').length;
 
       this.model.get('responses').push(data);
       this.model.save();
@@ -163,6 +177,9 @@ var OdCapture = OdCapture || {};
 
       var form = evt.target,
           data = NS.Util.serializeObject(form).attrs;
+
+      data.study_id = NS.Config.study_id;
+      data.device_id = device.uuid;
 
       if (this.model) {
         this.model.save(data);

@@ -79,13 +79,20 @@
         <fieldset>
           <p><input type="text" name="surveyor" value="{{ surveyor }}" class="input-block" placeholder="Name of Surveyor..."></p>
           <p><input type="text" name="route" value="{{ route }}" class="input-block" placeholder="Name of Route being surveyed..."></p>
+          <p><input type="text" name="origin_terminal" value="{{ origin_terminal }}" class="input-block" placeholder="Name of origin terminal..."></p>
+          <p><input type="text" name="destination_terminal" value="{{ destination_terminal }}" class="input-block" placeholder="Name of destination terminal..."></p>
           <p><select name="vehicle_type" class="select-block">
             {{#select vehicle_type}}
-            <option value="">Type of vehicle travelled on during survey</option>
-            <option value="vehicle-type-1">Vehicle Type One</option>
-            <option value="vehicle-type-2">Vehicle Type Two</option>
-            <option value="vehicle-type-3">Vehicle Type Three</option>
-            <option value="vehicle-type-4">Vehicle Type Four</option>
+              <option value="">Type of vehicle travelled on during survey</option>
+              <option>Non-Aircon Bus</option>
+              <option>Aircon Bus</option>
+              <option>AUV</option>
+              <option>Tricycle</option>
+              <option>MRT</option>
+              <option>LRT</option>
+              <option>Taxi</option>
+              <option>Car</option>
+              <option>Other</option>
             {{/select}}
           </select></p>
           <p><input type="text" name="capacity" value="{{ capacity }}" class="input-block" placeholder="Capacity of vehicle travelled on during survey"></p>
@@ -137,7 +144,7 @@
             <span class="column-right-35">
               <a href="#" class="btn btn-primary btn-block btn-small select-origin-btn">Select Location</a>
               <input type="hidden" name="origin_lat">
-              <input type="hidden" name="origin_lng">
+              <input type="hidden" name="origin_lon">
             </span>
           </p>
         </fieldset>
@@ -145,7 +152,7 @@
         <fieldset>
           <p><span class="prompt">What was your reason for being there?<span class="prompt"></p>
           <p>
-            <select name="origin_reason" class="select-block">
+            <select name="origin_purpose" class="select-block">
               <option value=""></option>
               <option>Home</option>
               <option>Work/Business</option>
@@ -167,7 +174,7 @@
             <span class="column-right-35">
               <a href="#" class="btn btn-primary btn-block btn-small select-dest-btn">Select Location</a>
               <input type="hidden" name="destination_lat">
-              <input type="hidden" name="destination_lng">
+              <input type="hidden" name="destination_lon">
             </span>
           </p>
         </fieldset>
@@ -175,7 +182,7 @@
         <fieldset>
           <p><span class="prompt">What is your reason for going there?</span></p>
           <p>
-            <select name="destination_reason" class="select-block">
+            <select name="destination_purpose" class="select-block">
               <option value=""></option>
               <option>Home</option>
               <option>Work/Business</option>

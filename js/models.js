@@ -7,7 +7,7 @@ var OdCapture = OdCapture || {};
   NS.SurveyModel = Backbone.Model.extend({
     defaults: {
       responses: [],
-      created_datetime: (new Date()).toISOString()
+      start_datetime: (new Date()).toISOString()
     }
   });
 

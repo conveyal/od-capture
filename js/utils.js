@@ -1,8 +1,8 @@
-/*globals jQuery */
+/*globals jQuery _ */
 
 var OdCapture = OdCapture || {};
 
-(function(NS) {
+(function(NS, $) {
   NS.Util = {
     serializeObject: function(form) {
       var $form = $(form),
