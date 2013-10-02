@@ -1,10 +1,11 @@
-/*globals Backbone */
+/*globals Backbone _ */
 
 var OdCapture = OdCapture || {};
 
 (function(NS) {
 
   NS.SurveyModel = Backbone.Model.extend({
+    idAttribute: '_id',
     defaults: {
       responses: [],
       start_datetime: (new Date()).toISOString()

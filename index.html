@@ -28,10 +28,11 @@
       <span class="route-name">{{ route }}</span>
       <span class="surveyor-name">{{ surveyor }}</span>,
       <span class="vehicle-type">{{ vehicle_type }}</span>
-      <a href="/surveys/{{ id }}" class="survey-edit-link">EDIT</a>
+      <a href="/surveys/{{ _id }}" class="survey-edit-link">EDIT</a>
     </div>
     <div class="column-right-35">
-      <a href="/surveys/{{ id }}/new" class="btn btn-primary btn-block btn-small">+ Response</a>
+      <a href="/surveys/{{ _id }}/new" class="btn btn-primary btn-block btn-small add-response-btn">+ Response</a>
+      <div class="ajax-loader"><img src="images/ajax-loader.gif"></div>
     </div>
   </script>
 
@@ -51,6 +52,12 @@
     <div class="container clearfix">
       <ul class="survey-list unstyled-list"></ul>
     </div><!-- / .container -->
+
+    {{#if surveys}}
+    <div class="container clearfix">
+      <a href="#" class="btn btn-block btn-primary upload-surveys-btn">Upload Completed Surveys</a>
+    </div><!-- / .container -->
+    {{/if}}
 
     <div class="container clearfix">
       <a href="/admin" class="admin-btn">Admin</a>
@@ -96,15 +103,15 @@
           <select name="vehicle_type" required class="select-block">
             {{#select vehicle_type}}
               <option value="">Type of vehicle travelled on during survey</option>
-              <option>Non-Aircon Bus</option>
-              <option>Aircon Bus</option>
-              <option>AUV</option>
-              <option>Tricycle</option>
-              <option>MRT</option>
-              <option>LRT</option>
-              <option>Taxi</option>
-              <option>Car</option>
-              <option>Other</option>
+              <option value="Non-Aircon Bus">Non-Aircon Bus</option>
+              <option value="Aircon Bus">Aircon Bus</option>
+              <option value="AUV">AUV</option>
+              <option value="Tricycle">Tricycle</option>
+              <option value="MRT">MRT</option>
+              <option value="LRT">LRT</option>
+              <option value="Taxi">Taxi</option>
+              <option value="Car">Car</option>
+              <option value="Other">Other</option>
             {{/select}}
           </select>
         </fieldset>
@@ -117,7 +124,7 @@
           <label>Notes:</label><textarea name="notes">{{ notes }}</textarea>
         </fieldset>
         <button type="submit" class="btn btn-block btn-large btn-primary">
-        {{#if id}} Save Survey {{else}} Create Survey {{/if}}
+        {{#if _id}} Save Survey {{else}} Create Survey {{/if}}
         </button>
       </form>
 

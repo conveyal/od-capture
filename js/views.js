@@ -1,4 +1,4 @@
-/*globals _ Backbone L FileTransfer device Handlebars jQuery */
+/*globals _ Backbone L FileTransfer Handlebars jQuery */
 
 var OdCapture = OdCapture || {};
 
@@ -184,7 +184,11 @@ var OdCapture = OdCapture || {};
       var data = NS.Util.serializeObject(form).attrs;
 
       data.study_id = NS.Config.study_id;
-      data.device_id = device.uuid;
+      if (window.device) {
+        data.device_id = window.device.uuid;
+      } else {
+        data.device_id = window.navigator.userAgent;
+      }
 
       if (this.model) {
         this.model.save(data);
@@ -219,10 +223,51 @@ var OdCapture = OdCapture || {};
 
   NS.SurveyCollectionView = Backbone.Marionette.CompositeView.extend({
     template: '#survey-collection-tpl',
+    events: {
+      'click .upload-surveys-btn': 'uploadSurveys'
+    },
     itemView: NS.SurveyItemView,
     itemViewContainer: '.survey-list',
     emptyView: NS.EmptySurveyCollectionView,
-    appendHtml: NS.OrderedCollectionMixin.appendHtml
+    appendHtml: NS.OrderedCollectionMixin.appendHtml,
+    serializeData: function() {
+      var data = {};
+
+      if (this.model) {
+        data = this.model.toJSON();
+      }
+      if (this.collection) {
+        data.surveys =  this.collection.toJSON();
+      }
+
+      return data;
+    },
+    uploadSurveys: function(evt) {
+      var self = this;
+      evt.preventDefault();
+
+      this.$el.addClass('uploading');
+
+      // Save all the things at once!
+      $.ajax({
+        url: 'https://api.mongolab.com/api/1/databases/manila/collections/sessions?apiKey=3nQuyaj4jaly4hFdjnXs4Bpy68aa4RQI',
+        data: JSON.stringify(NS.app.surveyCollection.toJSON()),
+        type: 'POST',
+        contentType: 'application/json',
+        success: function(model, resp, options) {
+          NS.app.surveyCollection.each(function(model) {
+            model.destroy();
+          });
+        },
+        error: function(model, xhr, options) {
+          window.alert('Unable to save surveys at the moment. Try again later.');
+        },
+        complete: function() {
+          self.$el.removeClass('uploading');
+          self.render();
+        }
+      });
+    }
   });
 
   NS.AdminView = Backbone.Marionette.ItemView.extend({

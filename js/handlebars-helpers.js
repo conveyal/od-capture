@@ -1,8 +1,8 @@
-/*globals Handlebars moment _ */
+/*globals Handlebars moment _ jQuery*/
 
 var OdCapture = OdCapture || {};
 
-(function(NS) {
+(function(NS, $) {
 
   Handlebars.registerHelper('last_updated', function() {
     if (this.responses && this.responses.length) {
@@ -14,7 +14,7 @@ var OdCapture = OdCapture || {};
 
   Handlebars.registerHelper('select', function( value, options ){
     var $el = $('<select />').html( options.fn(this) );
-    $el.find('[value=' + value + ']').attr({'selected':'selected'});
+    $el.find('[value="' + value + '"]').attr({'selected':'selected'});
     return $el.html();
   });
 
@@ -25,4 +25,4 @@ var OdCapture = OdCapture || {};
     return '';
   });
 
-}(OdCapture));
+}(OdCapture, jQuery));

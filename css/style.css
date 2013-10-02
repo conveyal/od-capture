@@ -326,6 +326,21 @@ h2 + .survey-meta {
   margin: 0 0 0 0.75em;
 }
 
+.add-response-btn {
+  display: block;
+}
+
+.uploading .add-response-btn {
+  display: none;
+}
+
+.survey-list .ajax-loader {
+  display: none;
+}
+.uploading .survey-list .ajax-loader {
+  display: block;
+}
+
 .location-btn-wrapper {
 }
 .checkmark {
@@ -435,13 +450,9 @@ h2 + .survey-meta {
   100% { opacity: 0; }
 }
 .uploading {
-  opacity: 0;
-  animation: fade-out 3s linear 0 1 alternate;
-  -webkit-animation: fade-out 3s linear 0 1 alternate;
 }
 
 .ajax-loader {
-  margin-top: .5em;
   padding: 1em 0 0.5em;
   text-align: center;
 }
