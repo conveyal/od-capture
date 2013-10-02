@@ -94,7 +94,17 @@ var OdCapture = OdCapture || {};
       return false;
     });
 
+    // Online detection
+    if (navigator.onLine) {
+      $('body').addClass('online');
+    }
+    window.addEventListener("offline", function(e) {
+      $('body').removeClass('online');
+    }, false);
 
+    window.addEventListener("online", function(e) {
+      $('body').addClass('online');
+    }, false);
   });
 
   // Init =====================================================================
