@@ -75,7 +75,7 @@
     </div><!-- / .container -->
     <div class="container clearfix">
 
-      <form>
+      <form novalidate>
         <fieldset>
           <input type="text" name="surveyor" value="{{ surveyor }}" required class="input-block" placeholder="Name of Surveyor...">
         </fieldset>
@@ -151,7 +151,7 @@
     </div><!-- / .container -->
     <div class="container clearfix">
 
-      <form>
+      <form novalidate>
 
         <fieldset>
           <p class="clearfix">
@@ -161,8 +161,8 @@
             </span>
             <span class="column-right-35">
               <a href="#" class="btn btn-primary btn-block btn-small select-origin-btn">Select Location</a>
-              <input type="hidden" name="origin_lat" required>
-              <input type="hidden" name="origin_lon" required>
+              <input class="is-hidden" type="text" name="origin_lat" required>
+              <input class="is-hidden" type="text" name="origin_lon" required>
             </span>
           </p>
         </fieldset>
@@ -191,8 +191,8 @@
             </span>
             <span class="column-right-35">
               <a href="#" class="btn btn-primary btn-block btn-small select-dest-btn">Select Location</a>
-              <input type="hidden" name="destination_lat" required>
-              <input type="hidden" name="destination_lon" required>
+              <input class="is-hidden" type="text" name="destination_lat" required>
+              <input class="is-hidden" type="text" name="destination_lon" required>
             </span>
           </p>
         </fieldset>
@@ -228,7 +228,7 @@
           </p>
         </fieldset>
 
-        <fieldset>
+        <fieldset data-checkboxgroup>
           <p><span class="prompt">Which types of vehicles will you use to complete this journey?</span></p>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Jeepney">&nbsp;Jeepney</label>
           <label class="checkbox-label btn btn-small"><input type="checkbox" name="vehicle_types" value="Non-Aircon Bus">&nbsp;Non-Aircon Bus</label>
@@ -298,6 +298,8 @@
 
   <div id="main-region"></div>
 
+  <!-- PhoneGap build includes this automatically, but you should include it if
+       you plan to test with Ripple. This is in the gitignore for a reason. -->
   <script src="phonegap.js"></script>
 
   <script src="lib/underscore.js"></script>

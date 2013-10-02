@@ -105,7 +105,7 @@ var OdCapture = OdCapture || {};
       mapRegion: '#map-region'
     },
     events: {
-      'submit form': 'saveResponse',
+      'submit form': 'handleSubmit',
       'click .select-origin-btn': 'selectOrigin',
       'click .select-dest-btn': 'selectDestination'
     },
@@ -151,11 +151,8 @@ var OdCapture = OdCapture || {};
       evt.preventDefault();
       this.mapRegion.show(this.destMapView);
     },
-    saveResponse: function(evt) {
-      evt.preventDefault();
-
-      var form = evt.target,
-          data = _.extend({}, NS.Util.serializeObject(form).attrs, this.data);
+    save: function(form) {
+      var data = _.extend({}, NS.Util.serializeObject(form).attrs, this.data);
 
       // Implicit data properties
       data.end_datetime = (new Date()).toISOString();
@@ -163,7 +160,18 @@ var OdCapture = OdCapture || {};
 
       this.model.get('responses').push(data);
       this.model.save();
+
       NS.app.router.navigate('surveys', {trigger: true});
+    },
+    handleSubmit: function(evt) {
+      evt.preventDefault();
+      var form = evt.target;
+
+      if (NS.Util.isFormValid(form)) {
+        this.save(form);
+      } else {
+        NS.Util.showValidity(form);
+      }
     }
   });
 
@@ -172,7 +180,7 @@ var OdCapture = OdCapture || {};
     events: {
       'submit form': 'handleSubmit'
     },
-    saveSurvey: function(form) {
+    save: function(form) {
       var data = NS.Util.serializeObject(form).attrs;
 
       data.study_id = NS.Config.study_id;
@@ -185,29 +193,14 @@ var OdCapture = OdCapture || {};
       }
       NS.app.router.navigate('surveys', {trigger: true});
     },
-    showValidity: function(form) {
-      var $form = $(form),
-          $fieldsets = $form.find('fieldset'),
-          valid = true;
-
-      $fieldsets.removeClass('invalid');
-      $fieldsets.each(function(i, el) {
-        var $fs = $(el);
-        $fs.find('input, select, textarea').each(function(i, el) {
-          if (!el.validity.valid) {
-            $fs.addClass('invalid');
-          }
-        });
-      });
-    },
     handleSubmit: function(evt) {
       evt.preventDefault();
       var form = evt.target;
 
       if (NS.Util.isFormValid(form)) {
-        this.saveSurvey(form);
+        this.save(form);
       } else {
-        this.showValidity(form);
+        NS.Util.showValidity(form);
       }
     }
   });

@@ -37,6 +37,20 @@ var OdCapture = OdCapture || {};
       var $form = $(form),
           valid = true;
 
+      // Special case for checkbox groups
+      $form.find('[data-checkboxgroup]').each(function(i, el) {
+        var $checkboxes = $(el).find('input[type="checkbox"]'),
+            checked = $checkboxes.is(':checked');
+
+        $checkboxes.each(function(i, el) {
+          el.setCustomValidity('');
+
+          if (!checked && i === 0) {
+            el.setCustomValidity('At least on checkbox should be checked.');
+          }
+        });
+      });
+
       $form.find('input, select, textarea').each(function(i, el) {
         if (!el.validity.valid) {
           valid = false;
@@ -46,6 +60,24 @@ var OdCapture = OdCapture || {};
       });
 
       return valid;
+    },
+
+    showValidity: function(form) {
+      var $form = $(form),
+          $fieldsets = $form.find('fieldset'),
+          $firstError = $form.find(':invalid').filter(':visible').first(),
+          valid = true;
+
+      $fieldsets.removeClass('invalid');
+      $firstError.focus();
+      $fieldsets.each(function(i, el) {
+        var $fs = $(el);
+        $fs.find('input, select, textarea').each(function(i, el) {
+          if (!el.validity.valid) {
+            $fs.addClass('invalid');
+          }
+        });
+      });
     },
 
     // http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
