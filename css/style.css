@@ -35,8 +35,8 @@ h5 { font-size: 1.25em; }
 h6 { font-size: 1em; text-transform: uppercase; }
 
 a:hover, a:active { outline: none; }
-a, a:active, a:visited { 
-  color: #00aaff; 
+a, a:active, a:visited {
+  color: #00aaff;
   text-decoration: none;
 }
 a:hover {}

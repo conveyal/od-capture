@@ -33,6 +33,21 @@ var OdCapture = OdCapture || {};
       };
     },
 
+    isFormValid: function(form) {
+      var $form = $(form),
+          valid = true;
+
+      $form.find('input, select, textarea').each(function(i, el) {
+        if (!el.validity.valid) {
+          valid = false;
+          // break out of loop
+          return false;
+        }
+      });
+
+      return valid;
+    },
+
     // http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
     lng2tile: function(lon,zoom) {
       return (Math.floor((lon+180)/360*Math.pow(2,zoom)));

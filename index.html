@@ -77,11 +77,23 @@
 
       <form>
         <fieldset>
-          <p><input type="text" name="surveyor" value="{{ surveyor }}" class="input-block" placeholder="Name of Surveyor..."></p>
-          <p><input type="text" name="route" value="{{ route }}" class="input-block" placeholder="Name of Route being surveyed..."></p>
-          <p><input type="text" name="origin_terminal" value="{{ origin_terminal }}" class="input-block" placeholder="Name of origin terminal..."></p>
-          <p><input type="text" name="destination_terminal" value="{{ destination_terminal }}" class="input-block" placeholder="Name of destination terminal..."></p>
-          <p><select name="vehicle_type" class="select-block">
+          <input type="text" name="surveyor" value="{{ surveyor }}" required class="input-block" placeholder="Name of Surveyor...">
+        </fieldset>
+
+        <fieldset>
+          <input type="text" name="route" value="{{ route }}" required class="input-block" placeholder="Name of Route being surveyed...">
+        </fieldset>
+
+        <fieldset>
+          <input type="text" name="origin_terminal" value="{{ origin_terminal }}" required class="input-block" placeholder="Name of origin terminal...">
+        </fieldset>
+
+        <fieldset>
+          <input type="text" name="destination_terminal" value="{{ destination_terminal }}" required class="input-block" placeholder="Name of destination terminal...">
+        </fieldset>
+
+        <fieldset>
+          <select name="vehicle_type" required class="select-block">
             {{#select vehicle_type}}
               <option value="">Type of vehicle travelled on during survey</option>
               <option>Non-Aircon Bus</option>
@@ -94,9 +106,15 @@
               <option>Car</option>
               <option>Other</option>
             {{/select}}
-          </select></p>
-          <p><input type="text" name="capacity" value="{{ capacity }}" class="input-block" placeholder="Capacity of vehicle travelled on during survey"></p>
-          <p><label>Notes:</label><textarea name="notes">{{ notes }}</textarea></p>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <input type="number" min="0" name="capacity" value="{{ capacity }}" required class="input-block" placeholder="Capacity of vehicle travelled on during survey">
+        </fieldset>
+
+        <fieldset>
+          <label>Notes:</label><textarea name="notes" required>{{ notes }}</textarea>
         </fieldset>
         <button type="submit" class="btn btn-block btn-large btn-primary">
         {{#if id}} Save Survey {{else}} Create Survey {{/if}}
@@ -143,8 +161,8 @@
             </span>
             <span class="column-right-35">
               <a href="#" class="btn btn-primary btn-block btn-small select-origin-btn">Select Location</a>
-              <input type="hidden" name="origin_lat">
-              <input type="hidden" name="origin_lon">
+              <input type="hidden" name="origin_lat" required>
+              <input type="hidden" name="origin_lon" required>
             </span>
           </p>
         </fieldset>
@@ -152,7 +170,7 @@
         <fieldset>
           <p><span class="prompt">What was your reason for being there?<span class="prompt"></p>
           <p>
-            <select name="origin_purpose" class="select-block">
+            <select name="origin_purpose" required class="select-block">
               <option value=""></option>
               <option>Home</option>
               <option>Work/Business</option>
@@ -173,8 +191,8 @@
             </span>
             <span class="column-right-35">
               <a href="#" class="btn btn-primary btn-block btn-small select-dest-btn">Select Location</a>
-              <input type="hidden" name="destination_lat">
-              <input type="hidden" name="destination_lon">
+              <input type="hidden" name="destination_lat" required>
+              <input type="hidden" name="destination_lon" required>
             </span>
           </p>
         </fieldset>
@@ -182,7 +200,7 @@
         <fieldset>
           <p><span class="prompt">What is your reason for going there?</span></p>
           <p>
-            <select name="destination_purpose" class="select-block">
+            <select name="destination_purpose" required class="select-block">
               <option value=""></option>
               <option>Home</option>
               <option>Work/Business</option>
@@ -198,7 +216,7 @@
         <fieldset>
           <p><span class="prompt">How many different vehicles will you use to complete this journey?</span></p>
           <p>
-            <select name="vehicle_count" class="select-block">
+            <select name="vehicle_count" required class="select-block">
               <option value=""></option>
               <option value="1">1 Vehicle</option>
               <option value="2">2 Vehicles</option>
@@ -230,7 +248,7 @@
               <span class="prompt">How many Pesos will this journey have cost you?</span>
             </span>
             <span class="column-right-23">
-              <input type="number" min="0" name="cost" class="input-block">
+              <input type="number" min="0" name="cost" required class="input-block">
             </span>
           </p>
         </fieldset>
@@ -238,7 +256,7 @@
         <fieldset>
           <p><span class="prompt">How often do you make this journey?</span></p>
           <p>
-            <select name="frequency" class="select-block">
+            <select name="frequency" required class="select-block">
               <option value=""></option>
               <option>7 days per week</option>
               <option>5-6 days per week</option>

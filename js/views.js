@@ -1,8 +1,8 @@
-/*globals _ Backbone L FileTransfer device Handlebars */
+/*globals _ Backbone L FileTransfer device Handlebars jQuery */
 
 var OdCapture = OdCapture || {};
 
-(function(NS) {
+(function(NS, $) {
 
   Backbone.Marionette.TemplateCache.prototype.compileTemplate = function(rawTemplate) {
     return Handlebars.compile(rawTemplate);
@@ -170,13 +170,10 @@ var OdCapture = OdCapture || {};
   NS.SurveyFormView = Backbone.Marionette.ItemView.extend({
     template: '#survey-form-tpl',
     events: {
-      'submit form': 'saveSurvey'
+      'submit form': 'handleSubmit'
     },
-    saveSurvey: function(evt) {
-      evt.preventDefault();
-
-      var form = evt.target,
-          data = NS.Util.serializeObject(form).attrs;
+    saveSurvey: function(form) {
+      var data = NS.Util.serializeObject(form).attrs;
 
       data.study_id = NS.Config.study_id;
       data.device_id = device.uuid;
@@ -187,6 +184,31 @@ var OdCapture = OdCapture || {};
         this.collection.create(data);
       }
       NS.app.router.navigate('surveys', {trigger: true});
+    },
+    showValidity: function(form) {
+      var $form = $(form),
+          $fieldsets = $form.find('fieldset'),
+          valid = true;
+
+      $fieldsets.removeClass('invalid');
+      $fieldsets.each(function(i, el) {
+        var $fs = $(el);
+        $fs.find('input, select, textarea').each(function(i, el) {
+          if (!el.validity.valid) {
+            $fs.addClass('invalid');
+          }
+        });
+      });
+    },
+    handleSubmit: function(evt) {
+      evt.preventDefault();
+      var form = evt.target;
+
+      if (NS.Util.isFormValid(form)) {
+        this.saveSurvey(form);
+      } else {
+        this.showValidity(form);
+      }
     }
   });
 
@@ -260,4 +282,4 @@ var OdCapture = OdCapture || {};
     }
   });
 
-}(OdCapture));
+}(OdCapture, jQuery));
