@@ -243,10 +243,18 @@ var OdCapture = OdCapture || {};
       return data;
     },
     uploadSurveys: function(evt) {
-      var self = this;
+      var self = this,
+          now = (new Date()).toISOString();
       evt.preventDefault();
 
       this.$el.addClass('uploading');
+
+      NS.app.surveyCollection.each(function(model) {
+        model.set({
+          'end_datetime': model.get('responses').length > 0 ? _.last(model.get('responses')).end_datetime : now,
+          'upload_datetime': now
+        });
+      });
 
       // Save all the things at once!
       $.ajax({

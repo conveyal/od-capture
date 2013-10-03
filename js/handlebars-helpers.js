@@ -6,10 +6,10 @@ var OdCapture = OdCapture || {};
 
   Handlebars.registerHelper('last_updated', function() {
     if (this.responses && this.responses.length) {
-      return moment(_.last(this.responses).created_datetime).fromNow();
+      return moment(_.last(this.responses).end_datetime).fromNow();
     }
 
-    return moment(this.created_datetime).fromNow();
+    return moment(this.start_datetime).fromNow();
   });
 
   Handlebars.registerHelper('select', function( value, options ){
