@@ -17,4 +17,25 @@ var OdCapture = OdCapture || {};
     model: NS.SurveyModel
   });
 
+  NS.RemoteSurveyModel = Backbone.Model.extend({
+    idAttribute: '_id',
+    url: function() {
+      var base = _.result(this.collection, 'url'),
+          result, key;
+      if (this.isNew()) {
+        return base;
+      }
+
+      result = base.split('?');
+      base = result[0];
+      key = result[1];
+      return base + (base.charAt(base.length - 1) === '/' ? '' : '/') + encodeURIComponent(this.id) + '?' + key;
+    }
+  });
+
+  NS.RemoteSurveyCollection = Backbone.Collection.extend({
+    model: NS.RemoteSurveyModel,
+    url: 'https://api.mongolab.com/api/1/databases/manila/collections/sessions?apiKey=3nQuyaj4jaly4hFdjnXs4Bpy68aa4RQI'
+  });
+
 }(OdCapture));
