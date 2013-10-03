@@ -286,10 +286,33 @@ var OdCapture = OdCapture || {};
       '$status': '.download-status'
     },
     events: {
-      'click #refresh-tiles-btn': 'refreshTiles'
+      'click #update-btn': 'update'
     },
     initialize: function() {
       this.fileSystem = this.options.fileSystem;
+    },
+    update: function(evt) {
+      evt.preventDefault();
+      var self = this,
+          url = this.$el.find('#config_url').val();
+
+      if (window.confirm('This will replace your configuration and replace all of your map tiles. Are you sure?')) {
+        $.ajax({
+          dataType: "json",
+          url: url,
+          success: function(data) {
+            data.url = url;
+            localStorage.setItem('odcapture-config', JSON.stringify(data));
+
+            NS.Config = data;
+
+            self.refreshTiles();
+          },
+          error: function() {
+            window.alert('Unable to get the config file. Please double check your url.');
+          }
+        });
+      }
     },
     refreshTiles: function() {
       var self = this,
@@ -303,29 +326,26 @@ var OdCapture = OdCapture || {};
               NS.Config.map_north, NS.Config.map_west,
               NS.Config.map_south, NS.Config.map_east,
               NS.Config.map_min, NS.Config.map_max
-            ),
-            confirmation = 'Delete all tiles and download ' + tileUrls.length + ' new tiles?';
-
-        if (window.confirm(confirmation)) {
-          NS.Util.rmDir(self.fileSystem, path, function() {
-            path = NS.Util.getAbsolutePath(self.fileSystem, path);
-
-            NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,
-              function() {
-                self.ui.$status.text('100%');
-              },
-              function(fileTransfer, percent) {
-                self.ui.$status.text((percent * 100.0).toFixed() + '%');
-              },
-              function() {
-                window.alert('An error occurred while downloading the new tiles.');
-              }
             );
-          },
-          function() {
-            window.alert('An error occurred while deleting the old tiles.');
-          });
-        }
+
+        NS.Util.rmDir(self.fileSystem, path, function() {
+          path = NS.Util.getAbsolutePath(self.fileSystem, path);
+
+          NS.Util.bulkDownload(fileTransfer, tileUrls, 0, path,
+            function() {
+              self.ui.$status.text('100%');
+            },
+            function(fileTransfer, percent) {
+              self.ui.$status.text((percent * 100.0).toFixed() + '%');
+            },
+            function() {
+              window.alert('An error occurred while downloading the new tiles.');
+            }
+          );
+        },
+        function() {
+          window.alert('An error occurred while deleting the old tiles.');
+        });
       }
     }
   });

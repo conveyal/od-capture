@@ -17,6 +17,8 @@ var OdCapture = OdCapture || {};
   NS.controller = {
     'responseForm': function(id) {
       var model = NS.app.surveyCollection.get(id);
+      // Redirect to admin if no config is set.
+      if (!NS.Config) { this.admin(); return; }
 
       if (model) {
         window.scrollTo(0, 0);
@@ -30,6 +32,8 @@ var OdCapture = OdCapture || {};
     },
     'surveyForm': function(id) {
       var model = NS.app.surveyCollection.get(id);
+      // Redirect to admin if no config is set.
+      if (!NS.Config) { this.admin(); return; }
 
       window.scrollTo(0, 0);
       NS.app.mainRegion.show(new NS.SurveyFormView({
@@ -38,6 +42,9 @@ var OdCapture = OdCapture || {};
       }));
     },
     'surveyList': function() {
+      // Redirect to admin if no config is set.
+      if (!NS.Config) { this.admin(); return; }
+
       window.scrollTo(0, 0);
       NS.app.mainRegion.show(new NS.SurveyCollectionView({
         collection: NS.app.surveyCollection
@@ -46,10 +53,14 @@ var OdCapture = OdCapture || {};
     'admin': function() {
       window.scrollTo(0, 0);
       NS.app.mainRegion.show(new NS.AdminView({
-        fileSystem: NS.app.fileSystem
+        fileSystem: NS.app.fileSystem,
+        model: new Backbone.Model(NS.Config)
       }));
     },
     'anything': function() {
+      // Redirect to admin if no config is set.
+      if (!NS.Config) { this.admin(); return; }
+
       // Default to the survey list
       window.scrollTo(0, 0);
       this.surveyList();
@@ -109,8 +120,10 @@ var OdCapture = OdCapture || {};
 
   // Init =====================================================================
   $(function() {
+    NS.Config = JSON.parse(localStorage.getItem('odcapture-config'));
+
     // For local testing. Assumed to not exist in production.
-    if (NS.Config.is_browser) {
+    if (NS.Config && NS.Config.is_browser) {
       navigator.webkitPersistentStorage.requestQuota(1024*1024, function(grantedBytes) {
         window.webkitRequestFileSystem(window.PERSISTENT, 0,
           function(fs) {
