@@ -262,12 +262,14 @@ var OdCapture = OdCapture || {};
         data: JSON.stringify(NS.app.surveyCollection.toJSON()),
         type: 'POST',
         contentType: 'application/json',
-        success: function(model, resp, options) {
-          NS.app.surveyCollection.each(function(model) {
+        success: function() {
+          var model = NS.app.surveyCollection.first();
+          while (model) {
             model.destroy();
-          });
+            model = NS.app.surveyCollection.first();
+          }
         },
-        error: function(model, xhr, options) {
+        error: function() {
           window.alert('Unable to save surveys at the moment. Try again later.');
         },
         complete: function() {
