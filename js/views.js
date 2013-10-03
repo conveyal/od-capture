@@ -54,15 +54,22 @@ var OdCapture = OdCapture || {};
     onShow: function() {
       var el = this.$el.find('.map').get(0),
           path = 'tiles',
-          tileUrl;
+          tileUrl, middleZoom;
 
       this.map = L.map(el, {
           minZoom: NS.Config.map_min,
           maxZoom: NS.Config.map_max
-        }).fitBounds(
+        });
+
+      if (this.center) {
+        middleZoom = NS.Config.map_min + Math.round((NS.Config.map_max - NS.Config.map_min) / 2);
+        this.map.setView(this.center, middleZoom);
+      } else {
+        this.map.fitBounds(
           [[NS.Config.map_south, NS.Config.map_west], [NS.Config.map_north, NS.Config.map_east]],
           NS.Config.map_min
         );
+      }
 
       // Because close clobbers the events
       this.delegateEvents();
@@ -84,9 +91,9 @@ var OdCapture = OdCapture || {};
     },
     setCenter: function(evt) {
       evt.preventDefault();
-      var center = this.map.getCenter();
+      this.center = this.map.getCenter();
 
-      this.trigger('setcenter', center.lat, center.lng);
+      this.trigger('setcenter', this.center.lat, this.center.lng);
       this.close();
     }
   });
