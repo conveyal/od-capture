@@ -191,10 +191,11 @@ textarea {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   width: 100%;
-  height: 2em;
+  height: 2.5em;
   font-size: 1em;
   border-radius: 0;
-  -webkit-appearance: menulist-button;
+  padding: 0.5em;
+  -webkit-appearance: listbox;
 }
 .input-block:focus,
 textarea:focus {
