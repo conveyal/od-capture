@@ -108,6 +108,7 @@
           <p><select name="vehicle_type" required class="select-block">
             {{#select vehicle_type}}
               <option value=""></option>
+              <option value="Jeepney (PUJ)">Jeepney (PUJ)</option>
               <option value="Non-Aircon Bus">Non-Aircon Bus</option>
               <option value="Aircon Bus">Aircon Bus</option>
               <option value="AUV">AUV</option>
@@ -186,13 +187,13 @@
           <p>
             <select name="origin_purpose" required class="select-block">
               <option value=""></option>
-              <option>Home</option>
-              <option>Work/Business</option>
-              <option>Shopping</option>
-              <option>Education</option>
-              <option>Social</option>
-              <option>Health</option>
-              <option>Other</option>
+              <option value="Home">Home/place of residence</option>
+              <option value="Work">Work/Business</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Education">Education</option>
+              <option value="Social">Social/Other leisure activity</option>
+              <option value="Healthcare">Healthcare (e.g. Doctor)</option>
+              <option value="Other">Other</option>
             </select>
           </p>
         </fieldset>
@@ -216,13 +217,13 @@
           <p>
             <select name="destination_purpose" required class="select-block">
               <option value=""></option>
-              <option>Home</option>
-              <option>Work/Business</option>
-              <option>Shopping</option>
-              <option>Education</option>
-              <option>Social</option>
-              <option>Health</option>
-              <option>Other</option>
+              <option value="Home">Home/place of residence</option>
+              <option value="Work">Work/Business</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Education">Education</option>
+              <option value="Social">Social/Other leisure activity</option>
+              <option value="Healthcare">Healthcare (e.g. Doctor)</option>
+              <option value="Other">Other</option>
             </select>
           </p>
         </fieldset>
@@ -277,7 +278,8 @@
               <option>2-4 days per week</option>
               <option>1 day per week</option>
               <option>Once every 2 weeks</option>
-              <option>Every 3 weeks or less</option>
+              <option>Once every 3 weeks</option>
+              <option>Once a month or less</option>
             </select>
           </p>
         </fieldset>
