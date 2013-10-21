@@ -12,17 +12,25 @@ var OdCapture = OdCapture || {};
 
       _.each(formArray, function(obj){
         var $field = $form.find('[name="' + obj.name + '"]');
+        
+        var value = null;
+        
+        if(obj.name.indexOf("_lat") != -1 || obj.name.indexOf("_lon") != -1)
+          value = parseFloat(obj.value);
+        else
+          value = obj.value;
+        
         if ($field.attr('data-placement') === 'header') {
-          headers[obj.name] = obj.value;
+          headers[obj.name] = value;
         } else {
           if (attrs[obj.name]) {
             if ($.isArray(attrs[obj.name])) {
-              attrs[obj.name].push(obj.value);
+              attrs[obj.name].push(value);
             } else {
-              attrs[obj.name] = [attrs[obj.name], obj.value];
+              attrs[obj.name] = [attrs[obj.name], value];
             }
           } else {
-            attrs[obj.name] = obj.value;
+            attrs[obj.name] = value;
           }
         }
       });
