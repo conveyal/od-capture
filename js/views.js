@@ -84,6 +84,8 @@ var OdCapture = OdCapture || {};
       L.tileLayer(tileUrl, {
         attribution: '&copy; OpenStreetMap contributors, CC-BY-SA. <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
       }).addTo(this.map);
+
+      L.control.locate().addTo(this.map);
     },
     hide: function(evt) {
       evt.preventDefault();
