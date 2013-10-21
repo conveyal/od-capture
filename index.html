@@ -84,25 +84,30 @@
 
       <form novalidate>
         <fieldset>
-          <input type="text" name="surveyor" value="{{ surveyor }}" required class="input-block" placeholder="Name of Surveyor...">
+          <p><span class="prompt">Name of Surveyor</span></p>
+          <p><input type="text" name="surveyor" value="{{ surveyor }}" required class="input-block"></p>
         </fieldset>
 
         <fieldset>
-          <input type="text" name="route" value="{{ route }}" required class="input-block" placeholder="Name of Route being surveyed...">
+          <p><span class="prompt">Name of Route being surveyed</span></p>
+          <p><input type="text" name="route" value="{{ route }}" required class="input-block"></p>
         </fieldset>
 
         <fieldset>
-          <input type="text" name="origin_terminal" value="{{ origin_terminal }}" required class="input-block" placeholder="Name of origin terminal...">
+          <p><span class="prompt">Name of origin terminal</span></p>
+          <p><input type="text" name="origin_terminal" value="{{ origin_terminal }}" required class="input-block"></p>
         </fieldset>
 
         <fieldset>
-          <input type="text" name="destination_terminal" value="{{ destination_terminal }}" required class="input-block" placeholder="Name of destination terminal...">
+          <p><span class="prompt">Name of destination terminal</span></p>
+          <p><input type="text" name="destination_terminal" value="{{ destination_terminal }}" required class="input-block"></p>
         </fieldset>
 
         <fieldset>
-          <select name="vehicle_type" required class="select-block">
+          <p><span class="prompt">Type of vehicle travelled on during survey</span></p>
+          <p><select name="vehicle_type" required class="select-block">
             {{#select vehicle_type}}
-              <option value="">Type of vehicle travelled on during survey</option>
+              <option value=""></option>
               <option value="Non-Aircon Bus">Non-Aircon Bus</option>
               <option value="Aircon Bus">Aircon Bus</option>
               <option value="AUV">AUV</option>
@@ -113,15 +118,17 @@
               <option value="Car">Car</option>
               <option value="Other">Other</option>
             {{/select}}
-          </select>
+          </select></p>
         </fieldset>
 
         <fieldset>
-          <input type="number" min="0" name="capacity" value="{{ capacity }}" required class="input-block" placeholder="Capacity of vehicle travelled on during survey">
+          <p><span class="prompt">Capacity of vehicle travelled on during survey</span></p>
+          <p><input type="number" min="0" name="capacity" value="{{ capacity }}" required class="input-block"></p>
         </fieldset>
 
         <fieldset>
-          <label>Notes:</label><textarea name="notes">{{ notes }}</textarea>
+          <p><span class="prompt">Notes</span></p>
+          <p><textarea name="notes">{{ notes }}</textarea></p>
         </fieldset>
         <button type="submit" class="btn btn-block btn-large btn-primary">
         {{#if _id}} Save Survey {{else}} Create Survey {{/if}}
