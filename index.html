@@ -44,6 +44,12 @@
         <a href="/surveys/new" class="btn btn-block btn-small btn-secondary">New Survey</a>
       </div>
 
+      <p>{{#deviceName}}{{/deviceName}}</p>
+
+      <div class="clearfix">
+      <a href="/admin" class="admin-btn">Admin</a>
+    </div>
+
     </div><!-- / .container -->
 
     <div class="container clearfix">
@@ -56,9 +62,7 @@
     </div><!-- / .container -->
     {{/if}}
 
-    <div class="container clearfix">
-      <a href="/admin" class="admin-btn">Admin</a>
-    </div>
+    
   </script>
 
   <script id="empty-survey-collection-tpl" type="text/x-handlebars-template">
