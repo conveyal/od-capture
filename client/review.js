@@ -72,7 +72,7 @@ var OdCapture = OdCapture || {};
 
 				_.each(obj.attributes.responses, function(response) {
 
-					var line = [obj.attributes._id, obj.attributes.study_id, obj.attributes.device_id, obj.attributes.surveyor, obj.attributes.start_datetime, obj.attributes.end_datetime, obj.attributes.route, obj.attributes.origin_terminal, obj.attributes.destination_terminal, obj.attributes.vehicle_types, obj.attributes.capacity, obj.attributes.notes, response.origin_lat, response.origin_lon, response.origin_purpose, response.destination_lat, response.destination_lon, response.destination_purpose, response.vehicle_count, response.vehicle_types, response.cost, response.frequency, response.start_datetime, response.response_end_datetime, response.survey_lat, response.survey_lon];
+					var line = [obj.attributes._id, obj.attributes.study_id, obj.attributes.device_id, obj.attributes.surveyor, obj.attributes.start_datetime, obj.attributes.end_datetime, obj.attributes.route, obj.attributes.origin_terminal, obj.attributes.destination_terminal, obj.attributes.vehicle_type, obj.attributes.capacity, obj.attributes.notes, response.origin_lat, response.origin_lon, response.origin_purpose, response.destination_lat, response.destination_lon, response.destination_purpose, response.vehicle_count, response.vehicle_types, response.cost, response.frequency, response.start_datetime, response.end_datetime, response.survey_lat, response.survey_lon];
 
 					lines.push(OdCapture.escapeCsvLine(line));
 
@@ -94,9 +94,7 @@ var OdCapture = OdCapture || {};
 
   		var id = $(evt.target).data("id");
 
-  		$('.inlineMap').hide();
-
-  		$('.inlineMap[data-id="' + id + '"]').show();
+  		$('.inlineMap[data-id="' + id + '"]').toggle();
 
   		if(!this.maps[id]){
 

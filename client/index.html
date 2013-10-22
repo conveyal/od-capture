@@ -14,16 +14,17 @@
   <link rel="stylesheet" href="style.css" type="text/css" />
 
   <!-- TODO: This is a Andoriod system font. We don't need to include this for Nexus tablets, it's here for testing in browsers. -->
-  <link href='http://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic|Roboto+Condensed:300italic,400italic,700italic,300,400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="fonts.css"  type="text/css" >
 
 </head>
 <body style="padding: 10px; min-height: 0%;">
 
   <script id="survey-item-tpl" type="text/x-handlebars-template">
+
+
     <div class="survey-meta column-left-90">
       <span class="survey-count">{{ responses.length }}</span>
-      <span class="survey-count"></span>
-      <small class="timestamp">Completed: <strong>{{ last_updated }}</strong></small>
+      <small class="timestamp">Survey Completed: <strong>{{ last_updated }}</strong></small>
       <span class="route-name">{{ route }}</span>
       <span class="surveyor-name">{{ surveyor }}</span>,
       <span class="vehicle-type">{{ vehicle_type }}</span> | 
@@ -45,9 +46,15 @@
 
   <hr/>
 
+  <div class="survey-meta column-left-90">
+    <span style="float:right;">Responses</span>
+    <span>Surveys</span>
+  </div>
+
+
   <div id="surveyView"></div>
 
-  <hr/>
+  
 
   
 
