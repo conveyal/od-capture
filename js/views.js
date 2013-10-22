@@ -193,6 +193,8 @@ var OdCapture = OdCapture || {};
       var data = NS.Util.serializeObject(form).attrs;
 
       data.study_id = NS.Config.study_id;
+      data.device_name = NS.Config.device_name;
+      
       if (window.device) {
         data.device_id = window.device.uuid;
       } else {
@@ -303,7 +305,8 @@ var OdCapture = OdCapture || {};
     update: function(evt) {
       evt.preventDefault();
       var self = this,
-          url = this.$el.find('#config_url').val();
+          url = this.$el.find('#config_url').val(),
+          device_name = this.$el.find('#device_name').val();
 
       if (window.confirm('This will replace your configuration and replace all of your map tiles. Are you sure?')) {
         $.ajax({
@@ -311,6 +314,7 @@ var OdCapture = OdCapture || {};
           url: url,
           success: function(data) {
             data.url = url;
+            data.device_name = device_name;
             localStorage.setItem('odcapture-config', JSON.stringify(data));
 
             NS.Config = data;
