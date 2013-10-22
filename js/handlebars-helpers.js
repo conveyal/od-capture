@@ -25,4 +25,8 @@ var OdCapture = OdCapture || {};
     return '';
   });
 
+  Handlebars.registerHelper('deviceName', function() {
+    return NS.Config.device_name;
+  });
+
 }(OdCapture, jQuery));
