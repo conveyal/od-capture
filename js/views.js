@@ -320,7 +320,7 @@ var OdCapture = OdCapture || {};
 
                   self.$el.removeClass('uploading');
                   self.render();
-                }
+                };
 
                 writerOb.seek(writerOb.length);
 
@@ -336,7 +336,7 @@ var OdCapture = OdCapture || {};
            window.alert('Unable to archive surveys (unable to get fileSystem).');
         }
       );
-  });
+  }});
 
   NS.AdminView = Backbone.Marionette.ItemView.extend({
     template: '#admin-tpl',
