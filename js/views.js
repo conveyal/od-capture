@@ -316,33 +316,39 @@ var OdCapture = OdCapture || {};
         function(fs) {
             window.alert('got file system');
 
-            fs.root.getFile("surveys/archived_surveys.txt", {create:true}, function(f) {
-              window.alert('got file');
-              f.createWriter(function(writerOb) {
-                window.alert('got writer');
-                writerOb.onwrite=function() {
-                  var model = NS.app.surveyCollection.first();
-                  while (model) {
-                    model.destroy();
-                    model = NS.app.surveyCollection.first();
-                  }
+            fs.root.getDirectory("surveys", {create:true, exclusive:false}, function(d) {
 
-                  self.$el.removeClass('uploading');
-                  self.render();
+                d.getFile("archived_surveys.txt", {create:true}, function(f) {
+                window.alert('got file');
+                f.createWriter(function(writerOb) {
+                  window.alert('got writer');
+                  writerOb.onwrite=function() {
+                    var model = NS.app.surveyCollection.first();
+                    while (model) {
+                      model.destroy();
+                      model = NS.app.surveyCollection.first();
+                    }
 
-                  window.alert('archive complete.');
-                };
+                    self.$el.removeClass('uploading');
+                    self.render();
 
-                writerOb.seek(writerOb.length);
+                    window.alert('archive complete.');
+                  };
 
-                writerOb.write(surveyJson + "\n\n");
+                  writerOb.seek(writerOb.length);
 
-                window.alert('surveys archived.');
+                  writerOb.write(surveyJson + "\n\n");
 
-              },
-              function(evt) {
-                window.alert('Unable to archive surveys (unable to createFile): ' + evt.target.error.code);
+                  window.alert('surveys archived.');
+
+                },
+                function(evt) {
+                  window.alert('Unable to archive surveys (unable to createFile): ' + evt.target.error.code);
+                });
               });
+            },
+            function(evt) {
+              window.alert('Unable to archive surveys (unable to createDirectory): ' + evt.target.error.code);
             });
         },
         function() {
