@@ -340,8 +340,8 @@ var OdCapture = OdCapture || {};
                 window.alert('surveys archived.');
 
               },
-              function() {
-                window.alert('Unable to archive surveys (unable to createFile).');
+              function(evt) {
+                window.alert('Unable to archive surveys (unable to createFile): ' + evt.target.error.code);
               });
             });
         },
