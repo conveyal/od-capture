@@ -293,72 +293,63 @@ var OdCapture = OdCapture || {};
 
     archiveSurveys: function(evt) {
 
-      window.alert('button clicked...');
+      if(window.confirm("This will archive survey data to your device''s SD card. The data can only be accessed via the filesstem. Are you sureyou want to continue?")) {
 
-      var self = this,
-          now = (new Date()).toISOString();
-      evt.preventDefault();
+        var self = this,
+            now = (new Date()).toISOString();
+        evt.preventDefault();
 
-      NS.app.surveyCollection.each(function(model) {
-        model.set({
-          'end_datetime': model.get('responses').length > 0 ? _.last(model.get('responses')).end_datetime : now,
-          'upload_datetime': now
+        NS.app.surveyCollection.each(function(model) {
+          model.set({
+            'end_datetime': model.get('responses').length > 0 ? _.last(model.get('responses')).end_datetime : now,
+            'upload_datetime': now
+          });
         });
-      });
 
-      
+        var surveyJson = JSON.stringify(NS.app.surveyCollection.toJSON());
 
-      var surveyJson = JSON.stringify(NS.app.surveyCollection.toJSON());
+        // request the persistent file system
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
 
-      // request the persistent file system
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+          function(fs) {
+            
+              fs.root.getDirectory("surveys", {create:true, exclusive:false}, function(d) {
 
-        function(fs) {
-            window.alert('got file system');
+                  d.getFile("archived_surveys.txt", {create:true}, function(f) {
+                
+                  f.createWriter(function(writerOb) {
+                  
+                    writerOb.onwrite=function() {
+                      var model = NS.app.surveyCollection.first();
+                      while (model) {
+                        model.destroy();
+                        model = NS.app.surveyCollection.first();
+                      }
 
-            fs.root.getDirectory("surveys", {create:true, exclusive:false}, function(d) {
+                      self.$el.removeClass('uploading');
+                      self.render();
 
-                d.getFile("archived_surveys.txt", {create:true}, function(f) {
-                window.alert('got file');
-                f.createWriter(function(writerOb) {
-                  window.alert('got writer');
-                  writerOb.onwrite=function() {
-                    var model = NS.app.surveyCollection.first();
-                    while (model) {
-                      model.destroy();
-                      model = NS.app.surveyCollection.first();
-                    }
+                    };
 
-                    self.$el.removeClass('uploading');
-                    self.render();
+                    writerOb.seek(writerOb.length);
 
-                    window.alert('archive complete.');
-                  };
-
-                  writerOb.seek(writerOb.length);
-
-                  writerOb.write(surveyJson + "\n\n");
-
-                  window.alert('surveys archived.');
-
-                },
-                function(evt) {
-                  window.alert('Unable to archive surveys (unable to createFile): ' + evt.target.error.code);
+                    writerOb.write(surveyJson + "\n\n");
+                  },
+                  function(evt) {
+                    window.alert('Unable to archive surveys (unable to createFile): ' + evt.target.error.code);
+                  });
                 });
+              },
+              function(evt) {
+                window.alert('Unable to archive surveys (unable to createDirectory): ' + evt.target.error.code);
               });
-            },
-            function(evt) {
-              window.alert('Unable to archive surveys (unable to createDirectory): ' + evt.target.error.code);
-            });
-        },
-        function() {
-           window.alert('Unable to archive surveys (unable to get fileSystem).');
-        }
-      );
+          },
+          function() {
+             window.alert('Unable to archive surveys (unable to get fileSystem).');
+          }
+        );
+      }
     }
-
-
-
   });
 
   NS.AdminView = Backbone.Marionette.ItemView.extend({
