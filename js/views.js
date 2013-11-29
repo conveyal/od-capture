@@ -303,7 +303,7 @@ var OdCapture = OdCapture || {};
         });
       });
 
-      var surveyJson = JSON.stringify(NS.app.surveyCollection.toJSON())
+      var surveyJson = JSON.stringify(NS.app.surveyCollection.toJSON());
 
       // request the persistent file system
       window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
@@ -325,18 +325,17 @@ var OdCapture = OdCapture || {};
                 writerOb.seek(writerOb.length);
 
                 writerOb.write(surveyJson + "\n\n");
-                
+
               },
               function() {
                 window.alert('Unable to archive surveys (unable to createFile).');
               });
-            }, 
-        }, 
+            });
+        },
         function() {
            window.alert('Unable to archive surveys (unable to get fileSystem).');
         }
       );
-    }
   });
 
   NS.AdminView = Backbone.Marionette.ItemView.extend({
