@@ -336,7 +336,11 @@ var OdCapture = OdCapture || {};
            window.alert('Unable to archive surveys (unable to get fileSystem).');
         }
       );
-  }});
+    }
+
+
+
+  });
 
   NS.AdminView = Backbone.Marionette.ItemView.extend({
     template: '#admin-tpl',
