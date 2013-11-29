@@ -293,7 +293,7 @@ var OdCapture = OdCapture || {};
 
     archiveSurveys: function(evt) {
 
-      if(window.confirm("This will archive survey data to your device''s SD card. The data can only be accessed via the filesstem. Are you sureyou want to continue?")) {
+      if(window.confirm("This will archive survey data to your device's SD card. The data can only be accessed via the file system. Are you sureyou want to continue?")) {
 
         var self = this,
             now = (new Date()).toISOString();
