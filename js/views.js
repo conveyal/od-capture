@@ -316,7 +316,7 @@ var OdCapture = OdCapture || {};
         function(fs) {
             window.alert('got file system');
 
-            fs.root.getFile("out_file.json", {create:true}, function(f) {
+            fs.root.getFile("archived_surveys.txt", {create:true}, function(f) {
               window.alert('got file');
               f.createWriter(function(writerOb) {
                 window.alert('got writer');
