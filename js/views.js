@@ -303,14 +303,20 @@ var OdCapture = OdCapture || {};
         });
       });
 
+      console.log('button clicked...');
+
       var surveyJson = JSON.stringify(NS.app.surveyCollection.toJSON());
 
       // request the persistent file system
       window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
 
         function(fs) {
+            console.log('got file system');
+
             fs.root.getFile("survey_" + now + ".json", {create:true}, function(f) {
+              console.log('got file');
               f.createWriter(function(writerOb) {
+                console.log('got writer');
                 writerOb.onwrite=function() {
                   var model = NS.app.surveyCollection.first();
                   while (model) {
