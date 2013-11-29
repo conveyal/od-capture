@@ -292,6 +292,9 @@ var OdCapture = OdCapture || {};
     },
 
     archiveSurveys: function(evt) {
+
+      window.alert('button clicked...');
+
       var self = this,
           now = (new Date()).toISOString();
       evt.preventDefault();
@@ -303,7 +306,7 @@ var OdCapture = OdCapture || {};
         });
       });
 
-      console.log('button clicked...');
+      
 
       var surveyJson = JSON.stringify(NS.app.surveyCollection.toJSON());
 
@@ -311,12 +314,12 @@ var OdCapture = OdCapture || {};
       window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
 
         function(fs) {
-            console.log('got file system');
+            window.alert('got file system');
 
             fs.root.getFile("survey_" + now + ".json", {create:true}, function(f) {
-              console.log('got file');
+              window.alert('got file');
               f.createWriter(function(writerOb) {
-                console.log('got writer');
+                window.alert('got writer');
                 writerOb.onwrite=function() {
                   var model = NS.app.surveyCollection.first();
                   while (model) {
@@ -326,13 +329,15 @@ var OdCapture = OdCapture || {};
 
                   self.$el.removeClass('uploading');
                   self.render();
+
+                  window.alert('archive complete.');
                 };
 
                 writerOb.seek(writerOb.length);
 
                 writerOb.write(surveyJson + "\n\n");
 
-                window.alert('Surveys archived.');
+                window.alert('surveys archived.');
 
               },
               function() {
