@@ -326,6 +326,8 @@ var OdCapture = OdCapture || {};
 
                 writerOb.write(surveyJson + "\n\n");
 
+                window.alert('Surveys archived.');
+
               },
               function() {
                 window.alert('Unable to archive surveys (unable to createFile).');
