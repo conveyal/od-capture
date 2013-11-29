@@ -235,7 +235,8 @@ var OdCapture = OdCapture || {};
   NS.SurveyCollectionView = Backbone.Marionette.CompositeView.extend({
     template: '#survey-collection-tpl',
     events: {
-      'click .upload-surveys-btn': 'uploadSurveys'
+      'click .upload-surveys-btn': 'uploadSurveys',
+      'click .archive-surveys-btn': 'archiveSurveys'
     },
     itemView: NS.SurveyItemView,
     itemViewContainer: '.survey-list',
@@ -288,6 +289,53 @@ var OdCapture = OdCapture || {};
           self.render();
         }
       });
+    },
+
+    archiveSurveys: function(evt) {
+      var self = this,
+          now = (new Date()).toISOString();
+      evt.preventDefault();
+
+      NS.app.surveyCollection.each(function(model) {
+        model.set({
+          'end_datetime': model.get('responses').length > 0 ? _.last(model.get('responses')).end_datetime : now,
+          'upload_datetime': now
+        });
+      });
+
+      var surveyJson = JSON.stringify(NS.app.surveyCollection.toJSON())
+
+      // request the persistent file system
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+
+        function(fs) {
+            fs.root.getFile("survey_" + now + ".json", {create:true}, function(f) {
+              f.createWriter(function(writerOb) {
+                writerOb.onwrite=function() {
+                  var model = NS.app.surveyCollection.first();
+                  while (model) {
+                    model.destroy();
+                    model = NS.app.surveyCollection.first();
+                  }
+
+                  self.$el.removeClass('uploading');
+                  self.render();
+                }
+
+                writerOb.seek(writerOb.length);
+
+                writerOb.write(surveyJson + "\n\n");
+                
+              },
+              function() {
+                window.alert('Unable to archive surveys (unable to createFile).');
+              });
+            }, 
+        }, 
+        function() {
+           window.alert('Unable to archive surveys (unable to get fileSystem).');
+        }
+      );
     }
   });
 
