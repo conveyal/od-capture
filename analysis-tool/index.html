@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>manila-od</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="build/build.css">
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12" style="text-align:center;"><h3>manila-od</h3></div>
+      </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="container">
+      <div id="map-controls" class="row">
+        <form id="purpose-selection" class="col-lg-6 col-md-6 col-sm-6">
+          <h3>Purpose</h3>
+        </form>
+        <form class="col-lg-3 col-md-3 col-sm-3">
+          <h3>Map Bounds</h3>
+          <div class="checkbox">
+            <label class="origin">
+              <input type="checkbox" name="origin-in-map"> Origins within Map
+            </label>
+          </div>
+          <div class="checkbox">
+            <label class="destination">
+              <input type="checkbox" name="destination-in-map"> Destinations within Map
+            </label>
+          </div>
+        </form>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+          <h3><span id="total-surveys"></span> Records</h3>
+          <button id="download" onclick="download" class="btn btn-success" data-loading-text="Downloading...">Download Records</button>
+        </div>
+      </div>
+
+      <div class="charts row"></div>
+
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <h3>Top 10 Rows</h3>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 horizontal-scroll">
+          <table id="survey-table" class="table table-bordered table-striped">
+            <thead>
+              <tr></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="//api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.js"></script>
+    <script src="bower_components/blob/Blob.js"></script>
+    <script src="bower_components/FileSaver/FileSaver.js"></script>
+    <script src="build/build.js"></script>
+    <script type="text/javascript">
+      require('boot');
+    </script>
+  </body>
+</html>

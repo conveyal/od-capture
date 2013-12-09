@@ -1,0 +1,6 @@
+{
+  "name": "haversine",
+  "scripts": [
+    "index.js"
+  ]
+}

@@ -1,0 +1,89 @@
+.select {
+  display: block;
+  width: 300px;
+}
+
+.pillbox li {
+  padding: 2px;
+  background: #fff;
+  border: 1px solid #ddd;
+  margin: 3px;
+  padding-right: 20px;
+  position: relative;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .03);
+}
+
+.select.open .select-box,
+.select.open .select-dropdown {
+  border: 1px solid #ccc;
+}
+
+.select li img {
+  width: 10px;
+  height: 10px;
+  padding: 0 5px 0 0;
+}
+
+.select .select-box {
+  border-radius: 3px;
+  padding: 5px;
+}
+
+.select.open .select-dropdown {
+  width: 310px;
+  border-radius: 0 0 3px 3px;
+  border-top-width: 0;
+  overflow: hidden;
+}
+
+.select.open .select-box {
+  border-radius: 3px 3px 0 0;
+}
+
+.pillbox li a {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 15px;
+  text-align: center;
+  line-height: 20px;
+  color: #ddd;
+  border-left: 1px solid #ddd;
+  font-size: 10px;
+  text-decoration: none;
+}
+
+.pillbox li a:hover {
+  background: #eee;
+  color: rgb(152, 218, 142);
+}
+
+.select.open .select-box {
+  border-bottom: 1px solid #eee
+}
+
+.highlight {
+  background: #f9f9f9;
+}
+
+input {
+  background: transparent;
+}
+
+input:focus {
+  outline: none;
+}
+
+.select-single {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .03), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+pre {
+  font-size: 8px;
+  margin-bottom: 30px;
+}

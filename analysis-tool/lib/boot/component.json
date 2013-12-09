@@ -1,0 +1,28 @@
+{
+  "name": "boot",
+  "dependencies": {
+    "ForbesLindesay/base64-encode": "*",
+    "ianstormtaylor/to-title-case": "*",
+    "mbostock/d3": "*",
+    "square/crossfilter": "*",
+    "visionmedia/debug": "*",
+    "yields/select": "*"
+  },
+  "local": [
+    "haversine"
+  ],
+  "scripts": [
+    "barchart.js",
+    "charts.js",
+    "crossfilter.js",
+    "d3-hexbin.js",
+    "hexbin.js",
+    "index.js",
+    "process-csv.js",
+    "table.js"
+  ],
+  "styles": [
+    "select.css",
+    "style.css"
+  ]
+}

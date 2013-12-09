@@ -1,0 +1,15 @@
+{
+  "globals": {
+    "$": false,
+    "L": false
+  },
+  "boss": true,
+  "browser": true,
+  "indent": 2,
+  "laxbreak": true,
+  "maxcomplexity": 10,
+  "node": true,
+  "quotmark": "single",
+  "trailing": true,
+  "undef": true
+}
