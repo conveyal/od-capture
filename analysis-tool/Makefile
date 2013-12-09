@@ -45,6 +45,7 @@ upload:
 	@s3cmd sync --guess-mime-type index.html s3://conveyal-cdn/manila/
 	@s3cmd sync --guess-mime-type --recursive bower_components s3://conveyal-cdn/manila/
 	@s3cmd sync --guess-mime-type --recursive build s3://conveyal-cdn/manila/
+	@s3cmd sync --guess-mime-type --recursive data s3://conveyal-cdn/manila/
 
 watch:
 	@watch $(MAKE) build
