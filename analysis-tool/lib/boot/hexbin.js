@@ -67,7 +67,7 @@ module.exports = function (surveys) {
       fill: true,
       fillOpacity: 0.75,
       fillColor: color(bin.color)
-    }).addTo(map()).bindLabel(bin.origins + ' origins - ' + bin.destinations + ' destinations');
+    }).addTo(map()).bindLabel(bin.origins + ' origins / ' + bin.destinations + ' destinations');
   });
 };
 
@@ -95,8 +95,6 @@ function getColorRange(bins) {
     if (bin.color > maxColor) maxColor = bin.color;
     if (bin.color < minColor) minColor = bin.color;
   });
-
-  console.log(minColor, maxColor);
 
   var color = d3.scale.sqrt()
     .domain([minColor, maxColor])

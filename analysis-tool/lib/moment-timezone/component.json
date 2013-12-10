@@ -1,0 +1,10 @@
+{
+  "name": "moment-timezone",
+  "dependencies": {
+    "moment/moment": "*"
+  },
+  "scripts": [
+    "data.js",
+    "index.js"
+  ]
+}

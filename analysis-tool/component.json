@@ -3,6 +3,7 @@
     "lib"
   ],
   "local": [
-    "boot"
+    "boot",
+    "moment-timezone"
   ]
 }
