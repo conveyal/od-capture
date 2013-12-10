@@ -76,6 +76,10 @@ th {
   text-align: center;
 }
 
+.chart svg {
+  padding: 20px;
+}
+
 .range, .reset {
   font-size: smaller;
   font-weight: 200;

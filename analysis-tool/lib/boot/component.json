@@ -4,17 +4,18 @@
     "ForbesLindesay/base64-encode": "*",
     "ianstormtaylor/to-title-case": "*",
     "mbostock/d3": "*",
-    "square/crossfilter": "*",
     "visionmedia/debug": "*",
     "yields/select": "*"
   },
   "local": [
-    "haversine"
+    "filter",
+    "haversine",
+    "leaflet",
+    "map"
   ],
   "scripts": [
     "barchart.js",
     "charts.js",
-    "crossfilter.js",
     "d3-hexbin.js",
     "hexbin.js",
     "index.js",

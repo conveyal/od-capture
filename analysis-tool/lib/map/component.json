@@ -1,0 +1,13 @@
+{
+  "name": "map",
+  "dependencies": {
+    "visionmedia/debug": "*"
+  },
+  "local": [
+    "filter",
+    "leaflet"
+  ],
+  "scripts": [
+    "index.js"
+  ]
+}

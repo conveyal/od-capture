@@ -3,11 +3,12 @@
  */
 
 var initCharts = require('./charts');
-var crossfilter = require('./crossfilter');
+var crossfilter = require('filter');
 var d3 = require('d3');
 var debug = require('debug')('boot');
 var encode = require('base64-encode');
 var hexbin = require('./hexbin');
+var map = require('map');
 var processCsv = require('./process-csv');
 var Select = require('select');
 var Table = require('./table');
@@ -17,13 +18,6 @@ var Table = require('./table');
  */
 
 var TOP = Infinity;
-
-/**
- * Within map bounds?
- */
-
-var $origin = $('input[name="origin-in-map"]');
-var $destination = $('input[name="destination-in-map"]');
 
 /**
  * Map height
@@ -42,7 +36,7 @@ processCsv(function(err, rows) {
   crossfilter.load(rows);
 
   // init map
-  var map = initMap(renderAll);
+  map.load(renderAll);
 
   // initialize select boxes
   initPurposeSelects(renderAll);
@@ -52,7 +46,7 @@ processCsv(function(err, rows) {
   crossfilter.create('distance');
   crossfilter.create('id');
   crossfilter.create('timeOfDay', function(d) {
-    return ((d.response_start_datetime.getHours() * 60) + d.response_start_datetime
+    return timeOfDay(d.response_start_datetime.getHours() * 60 + d.response_start_datetime
       .getMinutes()) / 60;
   });
 
@@ -64,7 +58,7 @@ processCsv(function(err, rows) {
     .top(1)[0]));
 
   // listen to checkbox changes
-  listenToCheckboxes(map, renderAll);
+  listenToCheckboxes(renderAll);
 
   // bind charts to dom
   var domCharts = d3.selectAll('.chart')
@@ -94,7 +88,7 @@ processCsv(function(err, rows) {
 
     domCharts.each(render);
 
-    hexbin(d.top(TOP), map, {
+    hexbin(d.top(TOP), {
       height: MAP_HEIGHT,
       width: window.innerWidth,
       radius: 20,
@@ -116,48 +110,11 @@ processCsv(function(err, rows) {
  * Listen to OD checkboxes
  */
 
-function listenToCheckboxes(map, renderAll) {
+function listenToCheckboxes(renderAll) {
   $('input[type="checkbox"]').on('change', function() {
-    updateBoundsFilters(map);
-
+    map.update();
     renderAll();
   });
-}
-
-/**
- * Update OD filters
- */
-
-function updateBoundsFilters(map) {
-  var bounds = map.getBounds();
-
-  var low = bounds.getSouthWest();
-  var high = bounds.getNorthEast();
-
-  debug('updating map bounds filters [ %s, %s ] to [ %s, %s ]', low.lat, low.lng,
-    high.lat, high.lng);
-
-  if ($origin.is(':checked')) {
-    var olat = crossfilter.create('origin_lat');
-    var olon = crossfilter.create('origin_lon');
-
-    olat.filter([low.lat, high.lat]);
-    olon.filter([low.lng, high.lng]);
-  } else if (crossfilter.dimensions.origin_lat) {
-    crossfilter.dimensions.origin_lat.dispose();
-    crossfilter.dimensions.origin_lon.dispose();
-  }
-
-  if ($destination.is(':checked')) {
-    var dlat = crossfilter.create('destination_lat');
-    var dlon = crossfilter.create('destination_lon');
-
-    dlat.filter([low.lat, high.lat]);
-    dlon.filter([low.lng, high.lng]);
-  } else if (crossfilter.dimensions.destination_lat) {
-    crossfilter.dimensions.destination_lat.dispose();
-    crossfilter.dimensions.destination_lon.dispose();
-  }
 }
 
 /**
@@ -194,23 +151,21 @@ function initPurposeSelects(fn) {
 }
 
 /**
- * Init map
+ * Manila Offset - Local Offset
  */
 
-function initMap(renderAll) {
-  var map = L.mapbox.map('map', 'conveyal.gepida3i', {
-    touchZoom: false,
-    scrollWheelZoom: false,
-  }).setView([14.5630, 121.0535], 9);
+var TZ_OFFSET = 60 * 8 - (new Date()).getTimezoneOffset();
+var H24 = 60 * 24;
 
-  map.on('moveend', function() {
-    debug('map moveend');
+/**
+ * Time in hours
+ */
 
-    updateBoundsFilters(map);
-    renderAll();
-  });
-
-  return map;
+function timeOfDay(minutes) {
+  minutes += TZ_OFFSET;
+  if (minutes >= H24) return minutes - H24;
+  if (minutes < 0) return minutes + H24;
+  return minutes;
 }
 
 /**

@@ -1,0 +1,9 @@
+{
+  "name": "filter",
+  "dependencies": {
+    "square/crossfilter": "*"
+  },
+  "scripts": [
+    "index.js"
+  ]
+}
