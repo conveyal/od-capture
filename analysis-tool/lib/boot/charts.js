@@ -50,5 +50,21 @@ module.exports = function init(dimensions) {
       ));
   });
 
+  charts[2].displayRange(function (from, to) {
+    return [ floatToTime(from), floatToTime(to) ];
+  });
+
   return charts;
 };
+
+/**
+ *
+ */
+
+function floatToTime(f) {
+  var hours = Math.floor(f);
+  var minutes = Math.floor((f - hours) * 60);
+  if (hours < 10) hours = '0' + hours;
+  if (minutes < 10) minutes = '0' + minutes;
+  return hours + ':' + minutes;
+}

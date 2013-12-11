@@ -29,6 +29,7 @@ module.exports = function barChart() {
   var dimension;
   var group;
   var round;
+  var displayRange;
 
   function chart(div) {
     var width = x.range()[1];
@@ -144,8 +145,12 @@ module.exports = function barChart() {
 
     var div = d3.select(this.parentNode.parentNode.parentNode);
 
+    var dr = displayRange
+      ? displayRange(extent[0], extent[1])
+      : [ extent[0].toFixed(1), extent[1].toFixed(1) ];
+
     div.select('.range')
-      .text('(' + extent[0].toFixed(1) + ' to ' + extent[1].toFixed(1) + ')');
+      .text('(' + dr[0] + ' to ' + dr[1] + ')');
 
     div.select('.reset')
       .style('display', 'inline');
@@ -224,6 +229,14 @@ module.exports = function barChart() {
       return round;
     }
     round = _;
+    return chart;
+  };
+
+  chart.displayRange = function(_) {
+    if (!arguments.length) {
+      return displayRange;
+    }
+    displayRange = _;
     return chart;
   };
 
