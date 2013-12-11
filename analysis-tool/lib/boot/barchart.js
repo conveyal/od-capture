@@ -64,7 +64,8 @@ module.exports = function barChart() {
           .datum(group.all());
 
         g.selectAll('.foreground.bar')
-          .attr('clip-path', 'url(#clip-' + id + ')');
+          .attr('clip-path', 'url(#clip-' + id + ')')
+          .attr('width', width);
 
         g.append('g')
           .attr('class', 'axis')

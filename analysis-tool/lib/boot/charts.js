@@ -15,21 +15,21 @@ module.exports = function init(dimensions) {
     name: 'Cost',
     dimension: dimensions.cost,
     group: dimensions.cost.group(function(d) {
-      return d;
+      return Math.round(d / 5) * 5;
     }),
     max: 150
   }, {
     name: 'Distance',
     dimension: dimensions.distance,
     group: dimensions.distance.group(function(d) {
-      return +d.toFixed(2);
+      return Math.round(d / 5) * 5;
     }),
-    max: 100
+    max: dimensions.distance.top(1)[0].distance
   }, {
     name: 'Time',
     dimension: dimensions.timeOfDay,
     group: dimensions.timeOfDay.group(function(d) {
-      return +d.toFixed(2);
+      return Math.floor(d);
     }),
     max: 24
   }];
@@ -37,7 +37,7 @@ module.exports = function init(dimensions) {
   var charts = [];
   groupings.forEach(function(g, i) {
     $('.charts').append('<div class="chart chart-' + i +
-      ' col-lg-4 col-md-4 col-sm-4"><h3 class="title">' + g.name +
+      ' col-lg-4 col-md-4 col-sm-6"><h3 class="title">' + g.name +
       ' <span class="range"></span> <a href="javascript:reset(' + i +
       ')" class="reset">reset</a></h3></div>');
 
@@ -45,8 +45,8 @@ module.exports = function init(dimensions) {
       .dimension(g.dimension)
       .group(g.group)
       .x(d3.scale.linear()
-        .domain([g.min || 0, g.max])
-        .range([0, 300])
+        .domain([0, g.max])
+        .rangeRound([0, 280])
       ));
   });
 

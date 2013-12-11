@@ -4,7 +4,7 @@
 // license : MIT
 // github.com/timrwood/moment-timezone
 
-(function () {
+(function() {
 
   var VERSION = "0.0.3";
 
@@ -20,14 +20,14 @@
       links = {},
 
       TIME_RULE_WALL_CLOCK = 0,
-      TIME_RULE_UTC        = 1,
-      TIME_RULE_STANDARD   = 2,
+      TIME_RULE_UTC = 1,
+      TIME_RULE_STANDARD = 2,
 
-      DAY_RULE_DAY_OF_MONTH   = 7,
-      DAY_RULE_LAST_WEEKDAY   = 8;
+      DAY_RULE_DAY_OF_MONTH = 7,
+      DAY_RULE_LAST_WEEKDAY = 8;
 
     // converts time in the HH:mm:ss format to absolute number of minutes
-    function parseMinutes (input) {
+    function parseMinutes(input) {
       input = input + '';
       var output = input.split(':'),
         sign = ~input.indexOf('-') ? -1 : 1,
@@ -42,30 +42,31 @@
       Rules
     ************************************/
 
-    function Rule (name, startYear, endYear, month, day, dayRule, time, timeRule, offset, letters) {
-      this.name      = name;
+    function Rule(name, startYear, endYear, month, day, dayRule, time,
+      timeRule, offset, letters) {
+      this.name = name;
       this.startYear = +startYear;
-      this.endYear   = +endYear;
-      this.month     = +month;
-      this.day       = +day;
-      this.dayRule   = +dayRule;
-      this.time      = parseMinutes(time);
-      this.timeRule  = +timeRule;
-      this.offset    = parseMinutes(offset);
-      this.letters   = letters || '';
+      this.endYear = +endYear;
+      this.month = +month;
+      this.day = +day;
+      this.dayRule = +dayRule;
+      this.time = parseMinutes(time);
+      this.timeRule = +timeRule;
+      this.offset = parseMinutes(offset);
+      this.letters = letters || '';
     }
 
     Rule.prototype = {
-      contains : function (year) {
+      contains: function(year) {
         return (year >= this.startYear && year <= this.endYear);
       },
 
-      start : function (year) {
+      start: function(year) {
         year = Math.min(Math.max(year, this.startYear), this.endYear);
         return moment.utc([year, this.month, this.date(year), 0, this.time]);
       },
 
-      date : function (year) {
+      date: function(year) {
         if (this.dayRule === DAY_RULE_DAY_OF_MONTH) {
           return this.day;
         } else if (this.dayRule === DAY_RULE_LAST_WEEKDAY) {
@@ -74,7 +75,7 @@
         return this.weekdayAfter(year);
       },
 
-      weekdayAfter : function (year) {
+      weekdayAfter: function(year) {
         var day = this.day,
           firstDayOfWeek = moment([year, this.month, 1]).day(),
           output = this.dayRule + 1 - firstDayOfWeek;
@@ -86,12 +87,13 @@
         return output;
       },
 
-      lastWeekday : function (year) {
+      lastWeekday: function(year) {
         var day = this.day,
           dow = day % 7,
           lastDowOfMonth = moment([year, this.month + 1, 1]).day(),
           daysInMonth = moment([year, this.month, 1]).daysInMonth(),
-          output = daysInMonth + (dow - (lastDowOfMonth - 1)) - (~~(day / 7) * 7);
+          output = daysInMonth + (dow - (lastDowOfMonth - 1)) - (~~(day / 7) *
+            7);
 
         if (dow >= lastDowOfMonth) {
           output -= 7;
@@ -104,13 +106,13 @@
       Rule Year
     ************************************/
 
-    function RuleYear (year, rule) {
+    function RuleYear(year, rule) {
       this.rule = rule;
       this.start = rule.start(year);
     }
 
     RuleYear.prototype = {
-      equals : function (other) {
+      equals: function(other) {
         if (!other || other.rule !== this.rule) {
           return false;
         }
@@ -118,7 +120,7 @@
       }
     };
 
-    function sortRuleYears (a, b) {
+    function sortRuleYears(a, b) {
       if (a.isLast) {
         return -1;
       }
@@ -132,17 +134,17 @@
       Rule Sets
     ************************************/
 
-    function RuleSet (name) {
+    function RuleSet(name) {
       this.name = name;
       this.rules = [];
     }
 
     RuleSet.prototype = {
-      add : function (rule) {
+      add: function(rule) {
         this.rules.push(rule);
       },
 
-      ruleYears : function (mom, lastZone) {
+      ruleYears: function(mom, lastZone) {
         var i, j,
           year = mom.year(),
           rule,
@@ -170,7 +172,7 @@
         return rules;
       },
 
-      rule : function (mom, offset, lastZone) {
+      rule: function(mom, offset, lastZone) {
         var rules = this.ruleYears(mom, lastZone),
           lastOffset = 0,
           rule,
@@ -193,7 +195,8 @@
             continue;
           }
 
-          if (lastZone && !rule.isLast && Math.abs(rule.start - lastZone.until) <= lastZoneOffsetAbs) {
+          if (lastZone && !rule.isLast && Math.abs(rule.start - lastZone.until) <=
+            lastZoneOffsetAbs) {
             lastOffset += lastZoneOffset - offset;
           }
 
@@ -218,7 +221,7 @@
         return defaultRule;
       },
 
-      lastYearRule : function (year) {
+      lastYearRule: function(year) {
         var i,
           rule,
           start,
@@ -244,7 +247,7 @@
       Zone
     ************************************/
 
-    function Zone (name, offset, ruleSet, letters, until, untilOffset) {
+    function Zone(name, offset, ruleSet, letters, until, untilOffset) {
       var i,
         untilArray = typeof until === 'string' ? until.split('_') : [9999];
 
@@ -256,22 +259,23 @@
       for (i = 0; i < untilArray.length; i++) {
         untilArray[i] = +untilArray[i];
       }
-      this.until = moment.utc(untilArray).subtract('m', parseMinutes(untilOffset));
+      this.until = moment.utc(untilArray).subtract('m', parseMinutes(
+        untilOffset));
     }
 
     Zone.prototype = {
-      rule : function (mom, lastZone) {
+      rule: function(mom, lastZone) {
         return this.ruleSet.rule(mom, this.offset, lastZone);
       },
 
-      lastRule : function () {
+      lastRule: function() {
         if (!this._lastRule) {
           this._lastRule = this.rule(this.until);
         }
         return this._lastRule;
       },
 
-      format : function (rule) {
+      format: function(rule) {
         return this.letters.replace("%s", rule.letters);
       }
     };
@@ -280,18 +284,18 @@
       Zone Set
     ************************************/
 
-    function sortZones (a, b) {
+    function sortZones(a, b) {
       return a.until - b.until;
     }
 
-    function ZoneSet (name) {
+    function ZoneSet(name) {
       this.name = normalizeName(name);
       this.displayName = name;
       this.zones = [];
     }
 
     ZoneSet.prototype = {
-      zoneAndRule : function (mom) {
+      zoneAndRule: function(mom) {
         var i,
           zone,
           lastZone;
@@ -308,17 +312,17 @@
         return [zone, zone.rule(mom, lastZone)];
       },
 
-      add : function (zone) {
+      add: function(zone) {
         this.zones.push(zone);
         this.zones.sort(sortZones);
       },
 
-      format : function (mom) {
+      format: function(mom) {
         var zoneAndRule = this.zoneAndRule(mom);
         return zoneAndRule[0].format(zoneAndRule[1]);
       },
 
-      offset : function (mom) {
+      offset: function(mom) {
         var zoneAndRule = this.zoneAndRule(mom);
         return -(zoneAndRule[0].offset + zoneAndRule[1].offset);
       }
@@ -328,7 +332,7 @@
       Global Methods
     ************************************/
 
-    function addRules (rules) {
+    function addRules(rules) {
       var i, j, rule;
       for (i in rules) {
         rule = rules[i];
@@ -338,7 +342,7 @@
       }
     }
 
-    function addRule (ruleString) {
+    function addRule(ruleString) {
       // don't duplicate rules
       if (rules[ruleString]) {
         return rules[ruleString];
@@ -346,7 +350,8 @@
 
       var p = ruleString.split(/\s/),
         name = normalizeName(p[0]),
-        rule = new Rule(name, p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10]);
+        rule = new Rule(name, p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8],
+          p[9], p[10]);
 
       // cache the rule so we don't add it again
       rules[ruleString] = rule;
@@ -357,11 +362,11 @@
       return rule;
     }
 
-    function normalizeName (name) {
+    function normalizeName(name) {
       return (name || '').toLowerCase().replace(/\//g, '_');
     }
 
-    function addZones (zones) {
+    function addZones(zones) {
       var i, j, zone;
       for (i in zones) {
         zone = zones[i];
@@ -371,14 +376,14 @@
       }
     }
 
-    function addLinks (linksToAdd) {
+    function addLinks(linksToAdd) {
       var i;
       for (i in linksToAdd) {
         links[normalizeName(i)] = normalizeName(linksToAdd[i]);
       }
     }
 
-    function addZone (zoneString) {
+    function addZone(zoneString) {
       // don't duplicate zones
       if (zones[zoneString]) {
         return zones[zoneString];
@@ -397,7 +402,7 @@
       return zone;
     }
 
-    function getRuleSet (name) {
+    function getRuleSet(name) {
       name = normalizeName(name);
       if (!ruleSets[name]) {
         ruleSets[name] = new RuleSet(name);
@@ -405,7 +410,7 @@
       return ruleSets[name];
     }
 
-    function getZoneSet (name) {
+    function getZoneSet(name) {
       var machineName = normalizeName(name);
       if (links[machineName]) {
         machineName = links[machineName];
@@ -416,7 +421,7 @@
       return zoneSets[machineName];
     }
 
-    function add (data) {
+    function add(data) {
       if (!data) {
         return;
       }
@@ -432,7 +437,7 @@
     }
 
     // overwrite moment.updateOffset
-    moment.updateOffset = function (mom) {
+    moment.updateOffset = function(mom) {
       var offset;
       if (mom._z) {
         offset = mom._z.offset(mom);
@@ -452,7 +457,7 @@
       return sets;
     }
 
-    moment.fn.tz = function (name) {
+    moment.fn.tz = function(name) {
       if (name) {
         this._z = getZoneSet(name);
         if (this._z) {
@@ -465,22 +470,23 @@
       }
     };
 
-    moment.fn.zoneName = function () {
+    moment.fn.zoneName = function() {
       if (this._z) {
         return this._z.format(this);
       }
       return oldZoneName.call(this);
     };
 
-    moment.fn.zoneAbbr = function () {
+    moment.fn.zoneAbbr = function() {
       if (this._z) {
         return this._z.format(this);
       }
       return oldZoneAbbr.call(this);
     };
 
-    moment.tz = function () {
-      var args = [], i, len = arguments.length - 1;
+    moment.tz = function() {
+      var args = [],
+        i, len = arguments.length - 1;
       for (i = 0; i < len; i++) {
         args[i] = arguments[i];
       }

@@ -46,7 +46,8 @@ processCsv(function(err, rows) {
   crossfilter.create('distance');
   crossfilter.create('id');
   crossfilter.create('timeOfDay', function(d) {
-    return timeOfDay(new Date(d.response_start_datetime).getHours() * 60 + new Date(d.response_start_datetime)
+    return timeOfDay(new Date(d.response_start_datetime).getHours() * 60 +
+      new Date(d.response_start_datetime)
       .getMinutes()) / 60;
   });
 
@@ -182,7 +183,9 @@ function timeOfDay(minutes) {
 
     var data = crossfilter.dimensions.id.top(TOP);
     var csv = d3.csv.format(data);
-    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    var blob = new Blob([csv], {
+      type: 'text/csv;charset=utf-8'
+    });
 
     saveAs(blob, 'surveys.csv');
 

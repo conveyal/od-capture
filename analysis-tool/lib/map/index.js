@@ -1,4 +1,3 @@
-
 /**
  * Dependencies
  */
@@ -17,7 +16,7 @@ var map = null;
  * Expose `map`
  */
 
-module.exports = function () {
+module.exports = function() {
   return map;
 };
 
@@ -25,14 +24,14 @@ module.exports = function () {
  * Expose `load`
  */
 
-module.exports.load = function (render) {
+module.exports.load = function(render) {
   map = L.mapbox.map('map', 'conveyal.gepida3i', {
     touchZoom: false,
     scrollWheelZoom: false,
   }).setView([14.5630, 121.0535], 9);
 
-  map.on('moveend', function() {
-    debug('map moveend');
+  map.on('viewreset', function() {
+    debug('map viewreset');
 
     update();
     render();

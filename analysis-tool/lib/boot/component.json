@@ -11,8 +11,7 @@
     "filter",
     "haversine",
     "leaflet",
-    "map",
-    "moment-timezone"
+    "map"
   ],
   "scripts": [
     "barchart.js",
