@@ -52,21 +52,23 @@ module.exports.update = update;
 
 var $origin = $('input[name="origin-in-map"]');
 var $destination = $('input[name="destination-in-map"]');
-var olat = null, olon = null, dlat = null, dlon = null;
+var olat = null,
+  olon = null,
+  dlat = null,
+  dlon = null;
 /**
  * Update Bounds filters
  */
 
 function update() {
   if (!olat) {
-    olat = filter.create('origin_lat');
-    olon = filter.create('origin_lon');
-    dlat = filter.create('destination_lat');
-    dlon = filter.create('destination_lon');
+    olat = filter.dimensions.origin_lat;
+    olon = filter.dimensions.origin_lon;
+    dlat = filter.dimensions.destination_lat;
+    dlon = filter.dimensions.destination_lon;
   }
 
   var bounds = map.getBounds();
-
   var low = bounds.getSouthWest();
   var high = bounds.getNorthEast();
 

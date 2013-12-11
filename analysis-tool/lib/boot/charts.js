@@ -50,8 +50,8 @@ module.exports = function init(dimensions) {
       ));
   });
 
-  charts[2].displayRange(function (from, to) {
-    return [ floatToTime(from), floatToTime(to) ];
+  charts[2].displayRange(function(from, to) {
+    return [floatToTime(from), floatToTime(to)];
   });
 
   return charts;

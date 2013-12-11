@@ -145,9 +145,8 @@ module.exports = function barChart() {
 
     var div = d3.select(this.parentNode.parentNode.parentNode);
 
-    var dr = displayRange
-      ? displayRange(extent[0], extent[1])
-      : [ extent[0].toFixed(1), extent[1].toFixed(1) ];
+    var dr = displayRange ? displayRange(extent[0], extent[1]) : [extent[0].toFixed(
+      1), extent[1].toFixed(1)];
 
     div.select('.range')
       .text('(' + dr[0] + ' to ' + dr[1] + ')');

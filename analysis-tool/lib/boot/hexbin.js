@@ -13,13 +13,15 @@ var map = require('map');
 var polys = [];
 
 /**
- * Expose `render`
+ * Manager
  */
 
 module.exports = function(surveys) {
-  polys.forEach(function(p) {
-    map().removeLayer(p);
-  });
+  // map
+  var m = map();
+
+  // remove all existing polys from the map
+  polys.forEach(m.removeLayer.bind(m));
 
   // convert surveys to sets of lat, lon points
   var mapped_surveys = surveys.map(function(v) {
@@ -35,44 +37,89 @@ module.exports = function(surveys) {
   }));
 
   // get the map bounds
-  var bounds = map().getBounds();
+  var bounds = m.getBounds();
   var maxRadius = (bounds.getNorth() - bounds.getSouth()) / 19;
 
+  polys = createHexbins(mapped_surveys, maxRadius, function(bins) {
+    return d3.scale.log()
+      .domain([1, (bins && bins[0] && bins[0].length) || 1])
+      .range([maxRadius / 5, maxRadius]);
+  }, getColorRange);
+
+  polys.forEach(function(p) {
+    p.addTo(m);
+    p.on('click', function() {
+      L.popup({
+        closeButton: false
+      })
+        .setLatLng([p.bin.y, p.bin.x])
+        .setContent(
+          '<a href="javascript:pointsInPolygon(' + JSON.stringify(p.bin.latLngs) +
+          ')" title="Only surveys that originated from this hexagon">' + p.bin
+          .origins +
+          '</a> O<br><a href="javascript:pointsInPolygon(' + JSON.stringify(
+            p.bin.latLngs) +
+          ', true)" title="Only show surveys that ended in this hexagon">' +
+          p.bin.destinations + '</a> D')
+        .openOn(m);
+    });
+  });
+};
+
+/**
+ * Expose `render`
+ */
+
+function createHexbins(data, max, rscale, cscale) {
   // Hexbins!
-  var hexbin = d3.hexbin().radius(maxRadius);
-  var bins = hexbin(mapped_surveys).sort(function(a, b) {
+  var hexbin = d3.hexbin().radius(max);
+  var bins = hexbin(data).sort(function(a, b) {
     return b.length - a.length;
   });
 
-  var color = getColorRange(bins);
+  rscale = rscale(bins);
+  cscale = cscale(bins);
 
-  var radius = d3.scale.log()
-    .domain([1, (bins && bins[0] && bins[0].length) || 1])
-    .range([0, maxRadius]);
-
-  polys = bins.map(function(bin) {
-    var r = radius(bin.length);
+  return bins.map(function(bin) {
     var x = bin.x;
     var y = bin.y;
-    var lls = hexbin.hexagon1(r).map(function(ll) {
+    var lls = hexbin.hexagon1(rscale(bin.length)).map(function(ll) {
       x += ll[0];
       y += ll[1];
       return [y, x];
     }).slice(1);
 
-    return L.polygon(lls, {
+    // create the polygon
+    var poly = L.polygon(lls, {
       stroke: true,
       weight: 1,
       color: '#e5e5e5',
       fill: true,
       fillOpacity: 0.75,
-      fillColor: color(bin.color)
-    }).addTo(map()).bindLabel(bin.origins + ' origins / ' + bin.destinations +
-      ' destinations');
-  });
+      fillColor: cscale(bin.color)
+    });
 
-  return polys;
-};
+    x = bin.x;
+    y = bin.y;
+    var maxlls = hexbin.hexagon1(max).map(function(ll) {
+      x += ll[0];
+      y += ll[1];
+      return [y, x];
+    }).slice(1);
+
+    // attach the bin
+    poly.bin = {
+      x: bin.x,
+      y: bin.y,
+      color: bin.color - 1,
+      origins: bin.origins - 1,
+      destinations: bin.destinations,
+      latLngs: maxlls
+    };
+
+    return poly;
+  });
+}
 
 /**
  * Color range

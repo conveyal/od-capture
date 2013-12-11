@@ -26,6 +26,14 @@ var TOP = Infinity;
 var MAP_HEIGHT = 400;
 
 /**
+ * Purposes
+ */
+
+var PURPOSES = ['Home', 'Work', 'Social', 'Education', 'Shopping', 'Healthcare',
+  'Other'
+];
+
+/**
  * Load
  */
 
@@ -35,13 +43,11 @@ processCsv(function(err, rows) {
   // load
   crossfilter.load(rows);
 
-  // init map
-  map.load(renderAll);
-
-  // initialize select boxes
-  initPurposeSelects(renderAll);
-
   // create dimensions
+  crossfilter.create('origin_lat');
+  crossfilter.create('origin_lon');
+  crossfilter.create('destination_lat');
+  crossfilter.create('destination_lon');
   crossfilter.create('cost');
   crossfilter.create('distance');
   crossfilter.create('id');
@@ -50,6 +56,18 @@ processCsv(function(err, rows) {
       new Date(d.response_start_datetime)
       .getMinutes()) / 60;
   });
+  crossfilter.create('pip', function(d) {
+    return JSON.stringify([
+      [d.origin_lat, d.origin_lon],
+      [d.destination_lat, d.destination_lon]
+    ]);
+  });
+
+  // init map
+  map.load(renderAll);
+
+  // initialize select boxes
+  var selects = initPurposeSelects(renderAll);
 
   // init charts
   var charts = initCharts(crossfilter.dimensions);
@@ -80,11 +98,57 @@ processCsv(function(err, rows) {
     renderAll();
   };
 
+  window.resetAll = function() {
+    for (var i in crossfilter.dimensions) {
+      crossfilter.dimensions[i].filter(null);
+    }
+
+    $('input[type="checkbox"]').attr('checked', null);
+
+    selects.forEach(function(sel) {
+      var selected = sel.values();
+      PURPOSES.filter(function(purpose) {
+        return selected.indexOf(purpose) == -1;
+      }).forEach(function(purpose) {
+        sel.select(purpose);
+      });
+    });
+
+    renderAll();
+  };
+
+  window.pointsInPolygon = function(lls, destination) {
+    debug('filtering points in polygon');
+
+    map().closePopup();
+
+    var bounds = lls.reduce(function(mm, ll) {
+      if (ll[0] < mm[0][0]) mm[0][0] = ll[0];
+      if (ll[0] > mm[1][0]) mm[1][0] = ll[0];
+      if (ll[1] < mm[0][1]) mm[0][1] = ll[1];
+      if (ll[1] > mm[1][1]) mm[1][1] = ll[1];
+      return mm;
+    }, [
+      [Infinity, Infinity],
+      [-Infinity, -Infinity]
+    ]);
+
+    crossfilter.dimensions.pip.filter(function(d) {
+      var lls = JSON.parse(d);
+      var ll = destination ? lls[1] : lls[0];
+      return latLngInBounds(ll, bounds);
+    });
+
+    renderAll();
+  };
+
   // render
   renderAll();
 
   // Whenever the brush moves, re-rendering everything.
   function renderAll(d) {
+    debug('rendering everything');
+
     d = d || crossfilter.dimensions.id;
 
     domCharts.each(render);
@@ -122,16 +186,12 @@ function listenToCheckboxes(renderAll) {
  * Init Selects
  */
 
-var purposes = ['Home', 'Work', 'Social', 'Education', 'Shopping', 'Healthcare',
-  'Other'
-];
-
 function initPurposeSelects(fn) {
   var $el = document.getElementById('purpose-selection');
-  ['Origin', 'Destination'].forEach(function(type) {
+  return ['Origin', 'Destination'].map(function(type) {
     var select = Select().label(type).multiple();
 
-    purposes.forEach(function(purpose, i) {
+    PURPOSES.forEach(function(purpose, i) {
       select.add(purpose, purpose).select(purpose);
     });
 
@@ -148,6 +208,8 @@ function initPurposeSelects(fn) {
 
       fn(dimension);
     });
+
+    return select;
   });
 }
 
@@ -167,6 +229,35 @@ function timeOfDay(minutes) {
   if (minutes >= H24) return minutes - H24;
   if (minutes < 0) return minutes + H24;
   return minutes;
+}
+
+/**
+ * In bounds?
+ *
+ * @param {Array} lat, lon point
+ * @param {Array} two lat, lon points.
+ */
+
+function latLngInBounds(ll, bounds) {
+  var lat0 = bounds[0][0];
+  var lat1 = bounds[1][0];
+  var lon0 = bounds[0][1];
+  var lon1 = bounds[1][1];
+
+  var temp;
+  if (lat0 > lat1) {
+    temp = lat0;
+    lat0 = lat1;
+    lat1 = temp;
+  }
+
+  if (lon0 > lon1) {
+    temp = lon0;
+    lon0 = lon1;
+    lon1 = temp;
+  }
+
+  return lat0 <= ll[0] && lon0 <= ll[1] && lat1 >= ll[0] && lon1 >= ll[1];
 }
 
 /**
