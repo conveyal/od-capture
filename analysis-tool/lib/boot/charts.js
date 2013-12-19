@@ -10,6 +10,8 @@ var d3 = require('d3');
  */
 
 module.exports = function init(dimensions) {
+  $('.charts').empty();
+
   // build groupings for the charts
   var groupings = [{
     name: 'Cost',
@@ -24,7 +26,7 @@ module.exports = function init(dimensions) {
     group: dimensions.distance.group(function(d) {
       return Math.round(d / 5) * 5;
     }),
-    max: dimensions.distance.top(1)[0].distance
+    max: 100
   }, {
     name: 'Time',
     dimension: dimensions.timeOfDay,
@@ -46,7 +48,7 @@ module.exports = function init(dimensions) {
       .group(g.group)
       .x(d3.scale.linear()
         .domain([0, g.max])
-        .rangeRound([0, 280])
+        .rangeRound([0, 260])
       ));
   });
 

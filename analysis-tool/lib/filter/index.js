@@ -21,6 +21,7 @@ var dimensions = exports.dimensions = {};
  */
 
 exports.load = function load(rows) {
+  if (exports.filter) clear();
   exports.filter = crossfilter(rows);
   return exports.filter;
 };
@@ -40,3 +41,20 @@ module.exports.create = function create(t, fn) {
   }
   return dimensions[t];
 };
+
+/**
+ * Expose `clear`
+ */
+
+module.exports.clear = clear;
+
+/**
+ * Remove all rows
+ */
+
+function clear() {
+  for (var i in dimensions) {
+    dimensions[i].filter(null);
+  }
+  exports.filter.remove();
+}

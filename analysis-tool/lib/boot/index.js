@@ -10,8 +10,7 @@ var encode = require('base64-encode');
 var hexbin = require('./hexbin');
 var map = require('map');
 var processCsv = require('./process-csv');
-var Select = require('select');
-var Table = require('./table');
+var purposes = require('./purposes');
 
 /**
  * Max Points
@@ -26,20 +25,19 @@ var TOP = Infinity;
 var MAP_HEIGHT = 400;
 
 /**
- * Purposes
+ * Load default CSV & init
  */
 
-var PURPOSES = ['Home', 'Work', 'Social', 'Education', 'Shopping', 'Healthcare',
-  'Other'
-];
+processCsv(function(err, rows) {
+  if (err) return window.alert(err);
+  init(rows);
+});
 
 /**
  * Load
  */
 
-processCsv(function(err, rows) {
-  if (err) return window.alert(err);
-
+function init(rows) {
   // load
   crossfilter.load(rows);
 
@@ -48,14 +46,17 @@ processCsv(function(err, rows) {
   crossfilter.create('origin_lon');
   crossfilter.create('destination_lat');
   crossfilter.create('destination_lon');
+  crossfilter.create('origin_purpose');
+  crossfilter.create('destination_purpose');
   crossfilter.create('cost');
   crossfilter.create('distance');
   crossfilter.create('id');
   crossfilter.create('timeOfDay', function(d) {
-    return timeOfDay(new Date(d.response_start_datetime).getHours() * 60 +
+    return timeOfDay(new Date(d.response_start_datetime).getUTCHours() * 60 +
       new Date(d.response_start_datetime)
-      .getMinutes()) / 60;
+      .getUTCMinutes()) / 60;
   });
+
   crossfilter.create('pip', function(d) {
     return JSON.stringify([
       [d.origin_lat, d.origin_lon],
@@ -63,21 +64,17 @@ processCsv(function(err, rows) {
     ]);
   });
 
+  var originPurposeGroup = crossfilter.dimensions.origin_purpose.group();
+  var destinationPurposeGroup = crossfilter.dimensions.destination_purpose.group();
+
   // init map
   map.load(renderAll);
-
-  // initialize select boxes
-  var selects = initPurposeSelects(renderAll);
 
   // init charts
   var charts = initCharts(crossfilter.dimensions);
 
-  // init table
-  var table = new Table('#survey-table', Object.keys(crossfilter.dimensions.id
-    .top(1)[0]));
-
-  // listen to checkbox changes
-  listenToCheckboxes(renderAll);
+  // init purposes
+  var purposeInputs = purposes.init();
 
   // bind charts to dom
   var domCharts = d3.selectAll('.chart')
@@ -99,21 +96,14 @@ processCsv(function(err, rows) {
   };
 
   window.resetAll = function() {
-    for (var i in crossfilter.dimensions) {
-      crossfilter.dimensions[i].filter(null);
-    }
-
-    $('input[type="checkbox"]').attr('checked', null);
-
-    selects.forEach(function(sel) {
-      var selected = sel.values();
-      PURPOSES.filter(function(purpose) {
-        return selected.indexOf(purpose) == -1;
-      }).forEach(function(purpose) {
-        sel.select(purpose);
-      });
+    $('input').off();
+    for (var i in crossfilter.dimensions) crossfilter.dimensions[i].filter(null);
+    charts.forEach(function(chart) {
+      chart.filter(null);
     });
-
+    $('.chart .range').empty();
+    $('.chart .reset').css('display', 'none');
+    listenToInputChanges(renderAll);
     renderAll();
   };
 
@@ -151,65 +141,55 @@ processCsv(function(err, rows) {
 
     d = d || crossfilter.dimensions.id;
 
-    domCharts.each(render);
-
-    hexbin(d.top(TOP), {
-      height: MAP_HEIGHT,
-      width: window.innerWidth,
-      radius: 20,
-      ocolor: '#428bca',
-      dcolor: '#d9534f'
+    var originPurposes = purposes.get('origin');
+    crossfilter.dimensions.origin_purpose.filter(function(d) {
+      return originPurposes.indexOf(d) !== -1;
     });
 
-    table.render(d.top(10));
+    var destinationPurposes = purposes.get('destination');
+    crossfilter.dimensions.destination_purpose.filter(function(d) {
+      return destinationPurposes.indexOf(d) !== -1;
+    });
 
-    $('#total-surveys').html(d3.format(',')(d.top(TOP).length));
+    domCharts.each(render);
+
+    var records = d.top(TOP);
+    var totalRecords = records.length;
+
+    purposes.setPercentage('origin', originPurposeGroup, totalRecords);
+    purposes.setPercentage('destination', destinationPurposeGroup,
+      totalRecords);
+
+    hexbin(records, {
+      radius: parseInt($('input[name="radius"]').val(), 10),
+      origins: $('input[name="show-origins-in-map"]').is(':checked'),
+      destinations: $('input[name="show-destinations-in-map"]').is(':checked')
+    });
+
+    $('#total-surveys').html(d3.format(',')(totalRecords));
 
     function render(method) {
       d3.select(this).call(method);
     }
   }
-});
 
-/**
- * Listen to OD checkboxes
- */
-
-function listenToCheckboxes(renderAll) {
-  $('input[type="checkbox"]').on('change', function() {
-    map.update();
-    renderAll();
-  });
+  listenToInputChanges(renderAll);
 }
 
 /**
- * Init Selects
+ * Listen to inptu changes
  */
 
-function initPurposeSelects(fn) {
-  var $el = document.getElementById('purpose-selection');
-  return ['Origin', 'Destination'].map(function(type) {
-    var select = Select().label(type).multiple();
+function listenToInputChanges(renderAll) {
+  $('input[name="show-origins-in-map"]').attr('checked', true);
+  $('input[name="show-destinations-in-map"]').attr('checked', true);
+  $('input[name="origin-in-map"]').attr('checked', false);
+  $('input[name="destination-in-map"]').attr('checked', false);
+  $('#purposes input').attr('checked', true);
 
-    PURPOSES.forEach(function(purpose, i) {
-      select.add(purpose, purpose).select(purpose);
-    });
-
-    $el.appendChild(select.el);
-
-    select.on('change', function(select) {
-      var name = type.toLowerCase() + '_purpose';
-      var values = select.values();
-      var dimension = crossfilter.create(name);
-
-      dimension.filter(function(d) {
-        return values.indexOf(d) !== -1;
-      });
-
-      fn(dimension);
-    });
-
-    return select;
+  $('input').on('change', function() {
+    map.update();
+    renderAll();
   });
 }
 
@@ -217,7 +197,7 @@ function initPurposeSelects(fn) {
  * Manila Offset - Local Offset
  */
 
-var TZ_OFFSET = 60 * 8 - (new Date()).getTimezoneOffset();
+var TZ_OFFSET = 60 * 8; // - (new Date()).getTimezoneOffset();
 var H24 = 60 * 24;
 
 /**
@@ -259,6 +239,22 @@ function latLngInBounds(ll, bounds) {
 
   return lat0 <= ll[0] && lon0 <= ll[1] && lat1 >= ll[0] && lon1 >= ll[1];
 }
+
+/**
+ * Proxy the upload button to the file input
+ */
+
+$('#upload-button').on('click', function() {
+  $('#upload').click();
+});
+
+/**
+ * Handle CSV Upload
+ */
+
+window.handleUpload = function(file) {
+  processCsv.upload(file, init);
+};
 
 /**
  * On download

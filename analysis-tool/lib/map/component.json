@@ -1,6 +1,7 @@
 {
   "name": "map",
   "dependencies": {
+    "ui-component/resizable": "*",
     "visionmedia/debug": "*"
   },
   "local": [

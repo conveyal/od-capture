@@ -1,11 +1,12 @@
 {
   "name": "boot",
   "dependencies": {
+    "component/throttle": "*",
     "ForbesLindesay/base64-encode": "*",
     "ianstormtaylor/to-title-case": "*",
     "mbostock/d3": "*",
     "visionmedia/debug": "*",
-    "yields/select": "*"
+    "visionmedia/minstache": "*"
   },
   "local": [
     "filter",
@@ -20,10 +21,13 @@
     "hexbin.js",
     "index.js",
     "process-csv.js",
-    "table.js"
+    "purposes.js"
   ],
   "styles": [
     "select.css",
     "style.css"
+  ],
+  "templates": [
+    "purpose-template.html"
   ]
 }

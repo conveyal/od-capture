@@ -5,6 +5,7 @@
 var debug = require('debug')('map');
 var filter = require('filter');
 var L = require('leaflet');
+var resizable = require('resizable');
 
 /**
  * Global map
@@ -25,6 +26,8 @@ module.exports = function() {
  */
 
 module.exports.load = function(render) {
+  if (map) map.remove();
+
   map = L.mapbox.map('map', 'conveyal.gepida3i', {
     touchZoom: false,
     scrollWheelZoom: false,
@@ -35,6 +38,14 @@ module.exports.load = function(render) {
 
     update();
     render();
+  });
+
+  resizable(document.getElementById('map'), {
+    handles: 's'
+  }).build().on('end', function() {
+    map.invalidateSize({
+      animate: true
+    });
   });
 
   return map;
