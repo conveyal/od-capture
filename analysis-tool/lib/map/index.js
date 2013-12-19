@@ -45,7 +45,12 @@ module.exports.load = function(render) {
   resizable(document.getElementById('map'), {
     handles: 's'
   }).build().on('end', function() {
+    debug('map resized');
+
     map.invalidateSize();
+
+    update();
+    render();
   });
 
   return map;
