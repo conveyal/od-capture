@@ -3,7 +3,7 @@
   "dependencies": {
     "component/throttle": "*",
     "ForbesLindesay/base64-encode": "*",
-    "ianstormtaylor/to-title-case": "*",
+    "ianstormtaylor/to-slug-case": "*",
     "mbostock/d3": "*",
     "visionmedia/debug": "*",
     "visionmedia/minstache": "*"
@@ -21,13 +21,15 @@
     "hexbin.js",
     "index.js",
     "process-csv.js",
-    "purposes.js"
+    "purposes.js",
+    "vehicles.js"
   ],
   "styles": [
     "select.css",
     "style.css"
   ],
   "templates": [
-    "purpose-template.html"
+    "purpose-template.html",
+    "vehicle-template.html"
   ]
 }

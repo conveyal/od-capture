@@ -34,27 +34,27 @@ th {
 #map {
   width: 100%;
   height: 400px;
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 #map .resizable-handle.resizable-s {
   background-color: #428bca;
   left: 0;
   right: 0;
-  height: 15px;
+  bottom: 0;
+  height: 20px;
   text-align: center;
 }
 
-#purposes {
+.list-group {
   margin-top: 10px;
 }
 
-#purposes .list-group-item input {
+.list-group .list-group-item input {
   margin-left: 10px;
 }
 
-#purposes .label {
+.list-group .label {
   font-size: 100%;
   font-weight: normal;
   width: 55px;

@@ -30,8 +30,10 @@ module.exports.load = function(render) {
 
   map = L.mapbox.map('map', 'conveyal.gepida3i', {
     touchZoom: false,
-    scrollWheelZoom: false,
+    scrollWheelZoom: false
   }).setView([14.5630, 121.0535], 9);
+
+  $('.mapbox-control-info').remove();
 
   map.on('viewreset', function() {
     debug('viewreset');
@@ -43,9 +45,7 @@ module.exports.load = function(render) {
   resizable(document.getElementById('map'), {
     handles: 's'
   }).build().on('end', function() {
-    map.invalidateSize({
-      animate: true
-    });
+    map.invalidateSize();
   });
 
   return map;

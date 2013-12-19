@@ -11,6 +11,7 @@ var hexbin = require('./hexbin');
 var map = require('map');
 var processCsv = require('./process-csv');
 var purposes = require('./purposes');
+var vehicles = require('./vehicles');
 
 /**
  * Max Points
@@ -48,6 +49,7 @@ function init(rows) {
   crossfilter.create('destination_lon');
   crossfilter.create('origin_purpose');
   crossfilter.create('destination_purpose');
+  crossfilter.create('vehicle_type');
   crossfilter.create('cost');
   crossfilter.create('distance');
   crossfilter.create('id');
@@ -66,6 +68,7 @@ function init(rows) {
 
   var originPurposeGroup = crossfilter.dimensions.origin_purpose.group();
   var destinationPurposeGroup = crossfilter.dimensions.destination_purpose.group();
+  var vehicleTypeGroup = crossfilter.dimensions.vehicle_type.group();
 
   // init map
   map.load(renderAll);
@@ -75,6 +78,9 @@ function init(rows) {
 
   // init purposes
   var purposeInputs = purposes.init();
+
+  // init vehicle types
+  var veichleInputs = vehicles.init();
 
   // bind charts to dom
   var domCharts = d3.selectAll('.chart')
@@ -141,21 +147,15 @@ function init(rows) {
 
     d = d || crossfilter.dimensions.id;
 
-    var originPurposes = purposes.get('origin');
-    crossfilter.dimensions.origin_purpose.filter(function(d) {
-      return originPurposes.indexOf(d) !== -1;
-    });
-
-    var destinationPurposes = purposes.get('destination');
-    crossfilter.dimensions.destination_purpose.filter(function(d) {
-      return destinationPurposes.indexOf(d) !== -1;
-    });
+    purposes.filter();
+    vehicles.filter();
 
     domCharts.each(render);
 
     var records = d.top(TOP);
     var totalRecords = records.length;
 
+    vehicles.setPercentage(vehicleTypeGroup, totalRecords);
     purposes.setPercentage('origin', originPurposeGroup, totalRecords);
     purposes.setPercentage('destination', destinationPurposeGroup,
       totalRecords);
@@ -186,6 +186,7 @@ function listenToInputChanges(renderAll) {
   $('input[name="origin-in-map"]').attr('checked', false);
   $('input[name="destination-in-map"]').attr('checked', false);
   $('#purposes input').attr('checked', true);
+  $('#vehicles input').attr('checked', true);
 
   $('input').on('change', function() {
     map.update();

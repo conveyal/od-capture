@@ -35,11 +35,23 @@ module.exports.init = function() {
     });
 };
 
-module.exports.get = function(type) {
+module.exports.filter = function() {
+  var originPurposes = get('origin');
+  filter.dimensions.origin_purpose.filter(function(d) {
+    return originPurposes.indexOf(d) !== -1;
+  });
+
+  var destinationPurposes = get('destination');
+  filter.dimensions.destination_purpose.filter(function(d) {
+    return destinationPurposes.indexOf(d) !== -1;
+  });
+};
+
+function get(type) {
   return PURPOSES.filter(function(purpose) {
     return $('#' + purpose + '-' + type).is(':checked');
   });
-};
+}
 
 module.exports.setPercentage = function(type, group, total) {
   group.top(Infinity).forEach(function(d) {
