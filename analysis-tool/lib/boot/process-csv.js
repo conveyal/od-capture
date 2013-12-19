@@ -21,6 +21,8 @@ module.exports = function loadDefault(cb) {
  */
 
 module.exports.upload = function upload(file, cb) {
+  if (!file) return;
+
   debug('upload file %s', file.name);
   var reader = new FileReader();
   reader.onload = function(e) {
