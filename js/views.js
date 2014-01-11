@@ -270,7 +270,7 @@ var OdCapture = OdCapture || {};
 
       // Save all the things at once!
       $.ajax({
-        url: 'https://api.mongolab.com/api/1/databases/manila/collections/sessions?apiKey=3nQuyaj4jaly4hFdjnXs4Bpy68aa4RQI',
+        url: NS.Config.storageUrl,
         data: JSON.stringify(NS.app.surveyCollection.toJSON()),
         type: 'POST',
         contentType: 'application/json',
