@@ -74,7 +74,7 @@ function init(rows) {
   map.load(renderAll);
 
   // init charts
-  var charts = initCharts(crossfilter.dimensions);
+  var domCharts = initCharts(renderAll);
 
   // init purposes
   var purposeInputs = purposes.init();
@@ -82,29 +82,11 @@ function init(rows) {
   // init vehicle types
   var veichleInputs = vehicles.init();
 
-  // bind charts to dom
-  var domCharts = d3.selectAll('.chart')
-    .data(charts)
-    .each(function(chart) {
-      chart.on('brush', function() {
-        renderAll(chart.dimension());
-      }).on('brushend', function() {
-        renderAll(chart.dimension());
-      });
-    });
-
-  // listen to resets
-  window.reset = function(i) {
-    $('.chart-' + i + ' .range').empty();
-    $('.chart-' + i + ' .reset').css('display', 'none');
-    charts[i].filter(null);
-    renderAll();
-  };
-
+  // reset all
   window.resetAll = function() {
     $('input').off();
     for (var i in crossfilter.dimensions) crossfilter.dimensions[i].filter(null);
-    charts.forEach(function(chart) {
+    domCharts.each(function(chart) {
       chart.filter(null);
     });
     $('.chart .range').empty();

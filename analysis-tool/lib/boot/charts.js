@@ -3,14 +3,17 @@
  */
 
 var barchart = require('./barchart');
+var crossfilter = require('filter');
 var d3 = require('d3');
 
 /**
  * Init charts
  */
 
-module.exports = function init(dimensions) {
+module.exports = function init(render) {
   $('.charts').empty();
+
+  var dimensions = crossfilter.dimensions;
 
   // build groupings for the charts
   var groupings = [{
@@ -40,7 +43,7 @@ module.exports = function init(dimensions) {
   groupings.forEach(function(g, i) {
     $('.charts').append('<div class="chart chart-' + i +
       ' col-lg-4 col-md-4 col-sm-6"><h3 class="title">' + g.name +
-      ' <span class="range"></span> <a href="javascript:reset(' + i +
+      ' <span class="range"></span> <a href="javascript:resetChart(' + i +
       ')" class="reset">reset</a></h3></div>');
 
     charts.push(barchart()
@@ -56,7 +59,26 @@ module.exports = function init(dimensions) {
     return [floatToTime(from), floatToTime(to)];
   });
 
-  return charts;
+  // listen to resets
+  window.resetChart = function(i) {
+    $('.chart-' + i + ' .range').empty();
+    $('.chart-' + i + ' .reset').css('display', 'none');
+    charts[i].filter(null);
+    render();
+  };
+
+  // bind charts to dom
+  var domCharts = d3.selectAll('.chart')
+    .data(charts)
+    .each(function(chart) {
+      chart.on('brush', function() {
+        render(chart.dimension());
+      }).on('brushend', function() {
+        render(chart.dimension());
+      });
+    });
+
+  return domCharts;
 };
 
 /**
