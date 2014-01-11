@@ -1,0 +1,159 @@
+
+* {
+  font-weight: 200;
+}
+
+body {
+  padding-bottom: 50px;
+}
+
+h3, th {
+  font-weight: 300;
+}
+
+th {
+  white-space: nowrap;
+}
+
+.horizontal-scroll {
+  overflow-x: scroll;
+}
+
+.origin {
+  color: #428bca;
+}
+
+.destination {
+  color: #d9534f;
+}
+
+.hexagons path {
+  stroke: #e5e5e5;
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+  margin-bottom: 15px;
+}
+
+#map .resizable-handle.resizable-s {
+  background-color: #428bca;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  text-align: center;
+}
+
+.list-group {
+  margin-top: 10px;
+}
+
+.list-group .list-group-item input {
+  margin-left: 10px;
+}
+
+.list-group .label {
+  font-size: 100%;
+  font-weight: normal;
+  width: 55px;
+  margin-left: 10px;
+}
+
+.form-inline output {
+  display: inline;
+}
+
+.form-inline .checkbox {
+  margin-left: 20px;
+}
+
+input[type=range] {
+  height: 10px;
+}
+
+/* Select Overrides */
+
+.select {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.select .select-box {
+  border: 1px solid #e5e5e5;
+  border-radius: 0;
+}
+
+.select.open .select-dropdown {
+  width: 100%;
+}
+
+.select .pillbox span {
+  padding-right: 7px;
+  display: inline-block;
+}
+
+.select .pillbox span a {
+  font-size: 0.75em;
+  padding-left: 3px;
+}
+
+.select-options li {
+  padding: 5px;
+  background-color: white;
+}
+
+.select-options li:hover,
+.select-options li:focus {
+  background-color: #f9f9f9;
+}
+
+/* Bar charts */
+
+.chart {
+  text-align: center;
+}
+
+.chart svg {
+  padding: 20px 5px;
+}
+
+.range, .reset {
+  font-size: smaller;
+  font-weight: 200;
+}
+
+.reset {
+  display: none;
+}
+
+.background.bar {
+  fill: #d9534f;
+  fill-opacity: .125;
+}
+
+.foreground.bar {
+  fill: #428bca;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font: 10px sans-serif;
+  font-weight: 200;
+}
+
+.brush rect.extent {
+  fill: #428bca;
+  fill-opacity: .125;
+}
+
+.brush .resize path {
+  fill: #f9f9f9;
+  stroke: #333;
+}

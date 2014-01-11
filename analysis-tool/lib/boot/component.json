@@ -1,0 +1,35 @@
+{
+  "name": "boot",
+  "dependencies": {
+    "component/throttle": "*",
+    "ForbesLindesay/base64-encode": "*",
+    "ianstormtaylor/to-slug-case": "*",
+    "mbostock/d3": "*",
+    "visionmedia/debug": "*",
+    "visionmedia/minstache": "*"
+  },
+  "local": [
+    "filter",
+    "haversine",
+    "leaflet",
+    "map"
+  ],
+  "scripts": [
+    "barchart.js",
+    "charts.js",
+    "d3-hexbin.js",
+    "hexbin.js",
+    "index.js",
+    "process-csv.js",
+    "purposes.js",
+    "vehicles.js"
+  ],
+  "styles": [
+    "select.css",
+    "style.css"
+  ],
+  "templates": [
+    "purpose-template.html",
+    "vehicle-template.html"
+  ]
+}

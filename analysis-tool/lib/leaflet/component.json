@@ -1,0 +1,10 @@
+{
+  "name": "leaflet",
+  "main": "leaflet.label.js",
+  "scripts": [
+    "leaflet.label.js"
+  ],
+  "styles": [
+    "leaflet.label.css"
+  ]
+}

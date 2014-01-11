@@ -1,0 +1,9 @@
+{
+  "paths": [
+    "lib"
+  ],
+  "local": [
+    "boot",
+    "moment-timezone"
+  ]
+}

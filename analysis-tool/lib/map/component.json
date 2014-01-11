@@ -1,0 +1,14 @@
+{
+  "name": "map",
+  "dependencies": {
+    "ui-component/resizable": "*",
+    "visionmedia/debug": "*"
+  },
+  "local": [
+    "filter",
+    "leaflet"
+  ],
+  "scripts": [
+    "index.js"
+  ]
+}
