@@ -45,7 +45,7 @@ var OdCapture = OdCapture || {};
   			
   			var id = $(evt.target).data("id");
 
-	  		$.ajax( { url: 'https://api.mongolab.com/api/1/databases/manila/collections/sessions/' + id + '?apiKey=3nQuyaj4jaly4hFdjnXs4Bpy68aa4RQI',
+	  		$.ajax( { url: '[URL to backend storage + object id]',
 	          type: "DELETE",
 	          async: true,
 	          success: this.loadData

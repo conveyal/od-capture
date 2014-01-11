@@ -35,7 +35,7 @@ var OdCapture = OdCapture || {};
 
   NS.RemoteSurveyCollection = Backbone.Collection.extend({
     model: NS.RemoteSurveyModel,
-    url: 'https://api.mongolab.com/api/1/databases/manila/collections/sessions?apiKey=3nQuyaj4jaly4hFdjnXs4Bpy68aa4RQI'
+    url: NS.Config.storageUrl
   });
 
 }(OdCapture));
